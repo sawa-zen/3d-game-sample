@@ -14,11 +14,14 @@ class ZenDash {
    */
   constructor() {
 
-    let loader = new Loader();
-    loader.load([
+    this._onCompleteLoad = this._onCompleteLoad.bind(this);
+
+    this._loader = new Loader();
+    this._loader.load([
       { id: 'tile', url: 'images/texture/tile.png' },
       { id: 'zensuke', url: 'model/zensuke.json' }
     ]);
+    this._loader.addEventListener('complete', this._onCompleteLoad);
 
     // UIレイヤー
     let uiLayer = new UILayer('uiLayer');
@@ -26,6 +29,14 @@ class ZenDash {
     let zenpad = new Zenpad('zenpadLayer');
     // 3Dレイヤーの生成
     let three = new ThreeLayer('threeLayer');
+  }
+
+  /**
+   * アセットの読み込み完了時のハンドラーです。
+   */
+  _onCompleteLoad() {
+    var zensukeData = this._loader.getResult('zensuke');
+    console.info('comp2', zensukeData);
   }
 }
 

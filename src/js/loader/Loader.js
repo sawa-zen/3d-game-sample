@@ -1,14 +1,17 @@
 import preloader from 'preloader';
+import {_} from 'lodash';
+import * as THREE from 'three';
 
 /**
  * ローダークラス
  */
-export default class Loader {
+export default class Loader extends THREE.EventDispatcher {
 
   /**
    * コンストラクター
    */
   constructor() {
+    super();
 
     this._onComplete = this._onComplete.bind(this);
 
@@ -34,9 +37,19 @@ export default class Loader {
       this._assetList.push({ id: data.id, url: data.url, value: null });
     });
 
-    console.info('load', manifest);
     // ロードを開始
     this._preloader.load();
+  }
+
+  /**
+   * 指定したIDのアセットを取得します。
+   */
+  getResult(id) {
+    let data = _.find(this._assetList, (data) => {
+      return data.id == id;
+    });
+
+    return data.value;
   }
 
   /**
@@ -48,6 +61,8 @@ export default class Loader {
       data.value = this._preloader.get(data.url);
     });
 
-    console.info(this._assetList);
+    console.info('comp');
+    // 完了イベントを発火
+    this.dispatchEvent({ type: 'complete' });
   }
 }
