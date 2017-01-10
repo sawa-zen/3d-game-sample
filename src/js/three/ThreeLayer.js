@@ -13,6 +13,9 @@ export default class ThreeLayer {
   constructor(domId) {
     console.info('ThreeLayer', THREE);
 
+    this._tick = this._tick.bind(this);
+    this._resize = this._resize.bind(this);
+
     // DOM
     this._wrapper = document.getElementById(domId);
 
@@ -28,6 +31,27 @@ export default class ThreeLayer {
     this._renderer.setPixelRatio(1);
     this._resize();
     this._wrapper.appendChild(this._renderer.domElement);
+
+    window.addEventListener('resize', this._resize);
+
+    // フレーム毎の更新
+    this._tick();
+  }
+
+  /**
+   * フレーム毎の更新です。
+   */
+  _tick() {
+    requestAnimationFrame(this._tick);
+
+    // フレームカウントをインクリメント
+    this._frame++;
+
+    // カメラの更新
+    this._camera.update();
+
+    // 描画
+    this._renderer.render(this._scene, this._camera);
   }
 
   /**
