@@ -16,7 +16,8 @@ class ZenDash {
 
     let loader = new Loader();
     loader.load([
-      { id: 'tile', url: 'images/texture/tile.png' }
+      { id: 'tile', url: 'images/texture/tile.png' },
+      { id: 'zensuke', url: 'model/zensuke.json' }
     ]);
 
     // UIレイヤー
