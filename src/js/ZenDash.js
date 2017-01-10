@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import Zenpad from 'zenpad.js';
 import UILayer from './ui/UILayer';
 import ThreeLayer from './three/ThreeLayer';
@@ -36,7 +37,9 @@ class ZenDash {
    */
   _onCompleteLoad() {
     var zensukeData = this._loader.getResult('zensuke');
-    console.info('comp2', zensukeData);
+    var jsonLoader = new THREE.JSONLoader();
+    console.info(THREE.JSONLoader);
+    console.info('comp2', jsonLoader.parse(zensukeData, 'model/'));
   }
 }
 
