@@ -1,4 +1,5 @@
 @import "three/three";
+@import "zenpad/zenpad";
 
 html, body {
   width: 100%;
@@ -14,4 +15,5 @@ body {
   overflow: hidden;
 
   @include threeLayer;
+  @include zenpadLayer;
 }
