@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import MainScene from './scene/MainScene';
 import Camera from './camera/Camera';
 
 /**
@@ -11,7 +12,6 @@ export default class ThreeLayer {
    * @constructor
    */
   constructor(domId) {
-    console.info('ThreeLayer', THREE);
 
     this._tick = this._tick.bind(this);
     this._resize = this._resize.bind(this);
@@ -20,7 +20,7 @@ export default class ThreeLayer {
     this._wrapper = document.getElementById(domId);
 
     // シーン
-    this._scene = new THREE.Scene();
+    this._scene = new MainScene();
 
     // カメラ
     this._camera = Camera.instance;
@@ -29,9 +29,9 @@ export default class ThreeLayer {
     this._renderer = new THREE.WebGLRenderer({antialias: true});
     this._renderer.setClearColor(0x000000);
     this._renderer.setPixelRatio(1);
-    this._resize();
     this._wrapper.appendChild(this._renderer.domElement);
 
+    this._resize();
     window.addEventListener('resize', this._resize);
 
     // フレーム毎の更新
