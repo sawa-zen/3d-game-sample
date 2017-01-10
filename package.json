@@ -7,7 +7,8 @@
     "build:sass": "node-sass src/sass --output public/css",
     "watch": "npm run watch:js & npm run watch:sass",
     "watch:sass": "node-sass src/sass --output public/css -w",
-    "watch:js": "watchify src/js/ZenDash.js -t babelify -d -o public/js/zendash.js"
+    "watch:js": "watchify src/js/ZenDash.js -t babelify -d -o public/js/zendash.js",
+    "postinstall": "npm run build"
   },
   "devDependencies": {
     "babel": "^6.5.2",
