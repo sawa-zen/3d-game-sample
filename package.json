@@ -17,6 +17,7 @@
     "browserify": "^13.0.1",
     "lite-server": "^2.2.2",
     "node-sass": "^4.2.0",
+    "preloader": "^2.1.0",
     "three": "^0.83.0",
     "watchify": "^3.8.0",
     "zenpad.js": "^0.1.0"

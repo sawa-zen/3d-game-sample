@@ -1,6 +1,7 @@
 import Zenpad from 'zenpad.js';
 import UILayer from './ui/UILayer';
 import ThreeLayer from './three/ThreeLayer';
+import Loader from './loader/Loader';
 
 /**
  * ZenDashのメインクラス
@@ -12,6 +13,12 @@ class ZenDash {
    * @constructor
    */
   constructor() {
+
+    let loader = new Loader();
+    loader.load([
+      { id: 'tile', url: 'images/texture/tile.png' }
+    ]);
+
     // UIレイヤー
     let uiLayer = new UILayer('uiLayer');
     // zenpadを生成
