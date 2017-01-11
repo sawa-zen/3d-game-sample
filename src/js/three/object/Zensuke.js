@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import glsl from 'glslify';
 import Loader from '../../loader/Loader';
 
 /**
@@ -56,12 +57,43 @@ export default class Zensuke extends THREE.Object3D {
   _createBodyMaterial(materials) {
     let fixMaterials = [];
     for (let i=0; i < materials.length; i++) {
-      let material = materials[i];
+      let material = this._createFaceMaterial(materials[i]);
       material.needsUpdate = true;
       material.skinning = true;
       fixMaterials.push(material);
     }
     return new THREE.MeshFaceMaterial(fixMaterials);
+  }
+
+
+  /**
+   * 表面マテリアルを生成します。
+   */
+  _createFaceMaterial(material) {
+    return new THREE.ShaderMaterial({
+      vertexShader: glsl('../../glsl/zensukeVertex.glsl'),
+      fragmentShader: glsl('../../glsl/zensukeFragment.glsl'),
+      uniforms: {
+        lightDirection: {
+          type: 'v3',
+          value: new THREE.Vector4(10, 40, 50)
+        },
+        toonTexture: {
+          type: 't',
+          value: THREE.ImageUtils.loadTexture('images/texture/toon.png')
+        },
+        map: {
+          type: 't',
+          value: THREE.ImageUtils.loadTexture('model/zensuke.png')
+        },
+        meshColor: {
+          type: 'v4',
+          value: new THREE.Vector4(material.color.r, material.color.g, material.color.b, 1)
+        },
+        time: { type: "f", value: 1.0 },
+        resolution: { type: "v2", value: new THREE.Vector2() }
+      }
+    });
   }
 
   /**
