@@ -40,9 +40,8 @@ export default class Zensuke extends THREE.Object3D {
     this._mixer = new THREE.AnimationMixer(this._mesh);
     this._action.walk = this._mixer.clipAction(geometry.animations[2]);
     this._action.walk.setEffectiveWeight(1);
-
-    // 歩きモーション開始
-    this._action.walk.play();
+    this._action.idle = this._mixer.clipAction(geometry.animations[1]);
+    this._action.idle.setEffectiveWeight(1);
   }
 
   /**
@@ -66,5 +65,20 @@ export default class Zensuke extends THREE.Object3D {
     let delta = this._clock.getDelta();
     let theta = this._clock.getElapsedTime();
     this._mixer.update(delta);
+  }
+
+  /**
+   * 歩かせます。
+   */
+  walk() {
+    // 歩きモーション開始
+    this._action.walk.play();
+  }
+
+  /**
+   * 止めます。
+   */
+  idle() {
+    this._action.walk.stop();
   }
 }

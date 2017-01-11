@@ -51,6 +51,7 @@ export default class MainScene extends THREE.Scene {
    */
   _onMoveStick(event) {
     console.info('moveStick', event);
+    this._zensuke.walk();
   }
 
   /**
@@ -58,5 +59,6 @@ export default class MainScene extends THREE.Scene {
    */
   _onReleaseStick() {
     console.info('releaseStick');
+    this._zensuke.idle();
   }
 }
