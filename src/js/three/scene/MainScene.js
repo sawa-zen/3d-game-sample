@@ -35,7 +35,7 @@ export default class MainScene extends THREE.Scene {
     this.add(this._zensuke);
 
     // フォグ
-    this.fog = new THREE.Fog(0xffffff, 50, 100);
+    this.fog = new THREE.Fog(0xffffff, 50, 200);
 
     // zenpadを生成
     this._zenpad = new Zenpad('zenpadLayer');

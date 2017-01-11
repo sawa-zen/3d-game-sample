@@ -16,8 +16,12 @@ export default class Camera extends THREE.PerspectiveCamera {
    */
   constructor() {
     super(45, window.innerWidth / window.innerHeight, 1, 1000);
-    this.position.x = 40;
-    this.position.y = 20;
+
+    this._xDistance = 30;
+    this._yDistance = 15;
+
+    this.position.x = this._xDistance;
+    this.position.y = this._yDistance;
     Camera._instance = this;
   }
 
@@ -25,9 +29,10 @@ export default class Camera extends THREE.PerspectiveCamera {
    * 毎フレームの更新をかけます。
    */
   update(targetPosition) {
-    this.lookAt(targetPosition);
-    this.position.x = targetPosition.x + 40;
-    this.position.y = targetPosition.y + 20;
+    let lookAtPositon = targetPosition.clone().add(new THREE.Vector3(0, 3, 0));
+    this.lookAt(lookAtPositon);
+    this.position.x = targetPosition.x + this._xDistance;
+    this.position.y = targetPosition.y + this._yDistance;
     this.position.z = targetPosition.z;
   }
 }
