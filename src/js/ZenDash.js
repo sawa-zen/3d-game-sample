@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import Zenpad from 'zenpad.js';
 import UILayer from './ui/UILayer';
 import ThreeLayer from './three/ThreeLayer';
 import Loader from './loader/Loader';
@@ -17,6 +16,7 @@ class ZenDash {
 
     this._onCompleteLoad = this._onCompleteLoad.bind(this);
 
+    // アセットのロード
     this._loader = Loader.instance;
     this._loader.load([
       { id: 'tile', url: 'images/texture/tile.png' },
@@ -31,8 +31,6 @@ class ZenDash {
   _setup() {
     // UIレイヤー
     let uiLayer = new UILayer('uiLayer');
-    // zenpadを生成
-    let zenpad = new Zenpad('zenpadLayer');
     // 3Dレイヤーの生成
     let three = new ThreeLayer('threeLayer');
   }
