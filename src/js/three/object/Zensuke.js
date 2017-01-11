@@ -68,8 +68,7 @@ export default class Zensuke extends THREE.Object3D {
    * 更新します。
    */
   update() {
-    let delta = this._clock.getDelta();
-    let theta = this._clock.getElapsedTime();
+    let delta = this._clock.getDelta() * 1.5;
     this._mixer.update(delta);
 
     // 歩いていれば前進させます。

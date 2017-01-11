@@ -54,8 +54,6 @@ export default class ThreeLayer {
 
     // シーンの更新
     this._scene.update();
-    // カメラの更新
-    this._camera.update();
     // 描画
     this._renderer.render(this._scene, this._camera);
 

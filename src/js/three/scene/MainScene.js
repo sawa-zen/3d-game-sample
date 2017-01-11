@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import Camera from '../camera/Camera';
 import Plane from '../object/Plane';
 import Zensuke from '../object/Zensuke';
 import Zenpad from 'zenpad.js';
@@ -17,6 +18,9 @@ export default class MainScene extends THREE.Scene {
 
     this._onMoveStick = this._onMoveStick.bind(this);
     this._onReleaseStick = this._onReleaseStick.bind(this);
+
+    // カメラ
+    this._camera = Camera.instance;
 
     // 環境光
     let light = new THREE.DirectionalLight(0xffffff, 1);
@@ -44,6 +48,7 @@ export default class MainScene extends THREE.Scene {
    */
   update() {
     this._zensuke.update();
+    this._camera.update(this._zensuke.position);
   }
 
   /**

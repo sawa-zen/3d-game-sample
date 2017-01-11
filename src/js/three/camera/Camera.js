@@ -24,7 +24,10 @@ export default class Camera extends THREE.PerspectiveCamera {
   /**
    * 毎フレームの更新をかけます。
    */
-  update() {
-    this.lookAt(new THREE.Vector3(0, 0, 0));
+  update(targetPosition) {
+    this.lookAt(targetPosition);
+    this.position.x = targetPosition.x + 40;
+    this.position.y = targetPosition.y + 20;
+    this.position.z = targetPosition.z;
   }
 }
