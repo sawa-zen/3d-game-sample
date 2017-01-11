@@ -23,7 +23,12 @@ class ZenDash {
       { id: 'zensuke', url: 'model/zensuke.json' }
     ]);
     this._loader.addEventListener('complete', this._onCompleteLoad);
+  }
 
+  /**
+   * セットアップ
+   */
+  _setup() {
     // UIレイヤー
     let uiLayer = new UILayer('uiLayer');
     // zenpadを生成
@@ -36,10 +41,7 @@ class ZenDash {
    * アセットの読み込み完了時のハンドラーです。
    */
   _onCompleteLoad() {
-    var zensukeData = this._loader.getResult('zensuke');
-    var jsonLoader = new THREE.JSONLoader();
-    console.info(THREE.JSONLoader);
-    console.info('comp2', jsonLoader.parse(zensukeData, 'model/'));
+    this._setup();
   }
 }
 
