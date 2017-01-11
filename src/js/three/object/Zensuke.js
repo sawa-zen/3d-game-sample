@@ -76,7 +76,7 @@ export default class Zensuke extends THREE.Object3D {
       uniforms: {
         lightDirection: {
           type: 'v3',
-          value: new THREE.Vector4(10, 40, 50)
+          value: new THREE.Vector4(3, 4, 5)
         },
         toonTexture: {
           type: 't',
