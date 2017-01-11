@@ -29,4 +29,11 @@ export default class MainScene extends THREE.Scene {
     // フォグ
     this.fog = new THREE.Fog(0xffffff, 50, 100);
   }
+
+  /**
+   * 更新します。
+   */
+  update() {
+    this._zensuke.update();
+  }
 }

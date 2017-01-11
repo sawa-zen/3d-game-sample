@@ -47,6 +47,9 @@ export default class ThreeLayer {
     // フレームカウントをインクリメント
     this._frame++;
 
+    // シーンの更新
+    this._scene.update();
+
     // カメラの更新
     this._camera.update();
 
