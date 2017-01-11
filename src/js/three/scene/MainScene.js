@@ -50,15 +50,13 @@ export default class MainScene extends THREE.Scene {
    * スティックが動かされた際のハンドラーです。
    */
   _onMoveStick(event) {
-    console.info('moveStick', event);
-    this._zensuke.walk();
+    this._zensuke.walk(event.angle);
   }
 
   /**
    * スティックの話された際のハンドラーです。
    */
   _onReleaseStick() {
-    console.info('releaseStick');
     this._zensuke.idle();
   }
 }
