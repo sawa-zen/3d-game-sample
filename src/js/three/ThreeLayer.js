@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import MainScene from './scene/MainScene';
 import Camera from './camera/Camera';
+import Stats from 'stats.js';
 
 /**
  * 3Dレイヤーのメインクラスです。
@@ -34,6 +35,10 @@ export default class ThreeLayer {
     this._resize();
     window.addEventListener('resize', this._resize);
 
+    // FPSの表示
+    this._stats = new Stats();
+    document.body.appendChild(this._stats.dom);
+
     // フレーム毎の更新
     this._tick();
   }
@@ -44,17 +49,18 @@ export default class ThreeLayer {
   _tick() {
     requestAnimationFrame(this._tick);
 
-    // フレームカウントをインクリメント
-    this._frame++;
+    // 計測開始
+    this._stats.begin();
 
     // シーンの更新
     this._scene.update();
-
     // カメラの更新
     this._camera.update();
-
     // 描画
     this._renderer.render(this._scene, this._camera);
+
+    // 計測終了
+    this._stats.end();
   }
 
   /**
