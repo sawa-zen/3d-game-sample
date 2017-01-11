@@ -17,6 +17,16 @@ export default class Zensuke extends THREE.Object3D {
     let jsonLoader = new THREE.JSONLoader();
     let parseData = jsonLoader.parse(loadResult, 'model/');
 
-    console.info(parseData);
+    // ジオメトリ
+    let geometry = parseData.geometry;
+    geometry.computeVertexNormals();
+    geometry.normalsNeedUpdate = true;
+
+    // マテリアル
+    let material = new THREE.MeshFaceMaterial(parseData.materials);
+
+    // メッシュ
+    this._mesh = new THREE.SkinnedMesh(geometry, material, false);
+    this.add(this._mesh);
   }
 }
