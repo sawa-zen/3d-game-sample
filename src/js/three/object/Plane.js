@@ -13,12 +13,12 @@ export default class Plane extends THREE.Object3D {
     super();
 
     // Geometry
-    let geometry = new THREE.PlaneGeometry(100, 100, 10, 10);
+    let geometry = new THREE.PlaneGeometry(200, 1000, 10, 10);
 
     // Material
     let texture = THREE.ImageUtils.loadTexture("images/texture/tile.png");
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set(16, 16);
+    texture.repeat.set(24, 160);
     let material = new THREE.MeshPhongMaterial({
       map: texture
     });
@@ -26,6 +26,7 @@ export default class Plane extends THREE.Object3D {
     // Mesh
     let mesh = new THREE.Mesh(geometry, material);
     mesh.rotation.x = -90 * Math.PI / 180;
+    mesh.rotation.z = 90 * Math.PI / 180;
     this.add(mesh);
   }
 }

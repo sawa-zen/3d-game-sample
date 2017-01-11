@@ -19,7 +19,9 @@ export default class MainScene extends THREE.Scene {
 
     // 地面
     this._plane = new Plane();
-    this._plane.position.y = -5;
     this.add(this._plane);
+
+    // フォグ
+    this.fog = new THREE.Fog(0xffffff, 50, 100);
   }
 }

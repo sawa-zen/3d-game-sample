@@ -16,8 +16,8 @@ export default class Camera extends THREE.PerspectiveCamera {
    */
   constructor() {
     super(45, window.innerWidth / window.innerHeight, 1, 1000);
-    this.position.x = 10;
-    this.position.y = 5;
+    this.position.x = 40;
+    this.position.y = 20;
     Camera._instance = this;
   }
 
