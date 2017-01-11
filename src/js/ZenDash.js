@@ -17,7 +17,7 @@ class ZenDash {
 
     this._onCompleteLoad = this._onCompleteLoad.bind(this);
 
-    this._loader = new Loader();
+    this._loader = Loader.instance;
     this._loader.load([
       { id: 'tile', url: 'images/texture/tile.png' },
       { id: 'zensuke', url: 'model/zensuke.json' }

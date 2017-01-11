@@ -7,6 +7,11 @@ import * as THREE from 'three';
  */
 export default class Loader extends THREE.EventDispatcher {
 
+  /** インスタンスを取得します。 */
+  static get instance() {
+    return Loader._instance || new Loader();
+  }
+
   /**
    * コンストラクター
    */
@@ -24,6 +29,8 @@ export default class Loader extends THREE.EventDispatcher {
       loadFullVideo: false
     });
     this._preloader.on('complete', this._onComplete);
+
+    Loader._instance = this;
   }
 
   /**
