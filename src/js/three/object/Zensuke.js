@@ -19,6 +19,8 @@ export default class Zensuke extends THREE.Object3D {
     this._velocity = 0.3;
     // 歩いているかどうか
     this._isWalking = false;
+    // 向き
+    this._agnle = 0;
 
     let loadResult = Loader.instance.getResult('zensuke');
     let jsonLoader = new THREE.JSONLoader();
@@ -72,7 +74,10 @@ export default class Zensuke extends THREE.Object3D {
 
     // 歩いていれば前進させます。
     if(this._isWalking) {
-      //this.position.x += this._velocity;
+      let axis = new THREE.Vector3(0, 1, 0);
+      let rad = this._angle * Math.PI / 180;
+      let addVec = new THREE.Vector3(-this._velocity, 0, 0).applyAxisAngle(axis, rad);
+      this.position.add(addVec);
     }
   }
 
