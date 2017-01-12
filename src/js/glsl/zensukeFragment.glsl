@@ -4,10 +4,19 @@ uniform sampler2D toonTexture;
 uniform vec4 meshColor;
 varying vec3 vNormal;
 varying vec2 vUv;
+
 void main() {
-  vec4 tColor;
-  tColor = texture2D(map, vUv);
-  float diffuse = clamp(dot(vNormal, normalize(lightDirection)), 0.0, 1.0);
-  vec4 smpColor = texture2D(toonTexture, vec2(diffuse, 0.0));
-  gl_FragColor = meshColor * smpColor * tColor;
+  // テクスチャカラー
+  vec4 tColor = texture2D(map, vUv);
+  // 頂点法線とライトの向きベクトルの内積
+  float dotValue = dot(vNormal, normalize(lightDirection));
+  // 内積値を0~1に収めてX座標を決める
+  float toonX = clamp(dotValue, 0.0, 1.0);
+  // Y座標
+  float toonY = 0.0;
+  // トゥーンテクスチャの色を取得
+  vec4 smpColor = texture2D(toonTexture, vec2(toonX, toonY));
+
+  // トゥーンテクスチャの色とベーステクスチャの色を乗算
+  gl_FragColor = smpColor * tColor;
 }
