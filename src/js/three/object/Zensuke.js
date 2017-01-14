@@ -41,6 +41,7 @@ export default class Zensuke extends THREE.Object3D {
     // メッシュ
     this._mesh = new THREE.SkinnedMesh(geometry, material, false);
     this._mesh.rotation.y = -90 * Math.PI / 180;
+    this._mesh.castShadow = true;
     this.add(this._mesh);
 
     // ミキサー

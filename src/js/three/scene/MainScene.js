@@ -3,6 +3,7 @@ import Camera from '../camera/Camera';
 import Plane from '../object/Plane';
 import Zensuke from '../object/Zensuke';
 import Zenpad from 'zenpad.js';
+import DirectionalLight from '../light/DirectionalLight';
 
 /**
  * メインシーンクラスです。
@@ -23,9 +24,14 @@ export default class MainScene extends THREE.Scene {
     // カメラ
     this._camera = Camera.instance;
 
-    // 環境光
-    let light = new THREE.DirectionalLight(0xffffff, 1);
-    this.add(light);
+    // 環境光源
+    let ambientLight = new THREE.AmbientLight(0xffffff);
+    this.add(ambientLight);
+
+    // 平行光源
+    this._directionalLight = new DirectionalLight();
+    this.add(this._directionalLight);
+    this._directionalLight.showHelper();
 
     // 地面
     this._plane = new Plane();
@@ -51,6 +57,7 @@ export default class MainScene extends THREE.Scene {
   update() {
     this._zensuke.update();
     this._camera.update(this._zensuke.position);
+    this._directionalLight.seek(this._zensuke);
   }
 
   /**

@@ -30,6 +30,7 @@ export default class ThreeLayer {
     this._renderer = new THREE.WebGLRenderer({antialias: false});
     this._renderer.setClearColor(0xffffff);
     this._renderer.setPixelRatio(0.5);
+    this._renderer.shadowMapEnabled = true;
     this._wrapper.appendChild(this._renderer.domElement);
 
     this._resize();
