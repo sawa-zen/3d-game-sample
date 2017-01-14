@@ -124,10 +124,12 @@ export default class Zensuke extends THREE.Object3D {
    * 歩かせます。
    */
   walk(angle) {
-    // 歩きモーション開始
-    this._action.walk.play();
-    // 歩いているフラグを立たせる
-    this._isWalking = true;
+    if(!this._isWalking) {
+      // 歩きモーション開始
+      this._action.walk.play();
+      // 歩いているフラグを立たせる
+      this._isWalking = true;
+    }
 
     // 向きを変える
     this._angle = -(angle + 90);
