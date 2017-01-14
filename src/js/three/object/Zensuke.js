@@ -16,7 +16,6 @@ export default class Zensuke extends THREE.Object3D {
 
     // アクション
     this._action = {};
-    this._action2 = {};
     // 速度
     this._velocity = 0.3;
     // 歩いているかどうか
@@ -44,24 +43,15 @@ export default class Zensuke extends THREE.Object3D {
     this._mesh.rotation.y = -90 * Math.PI / 180;
     this.add(this._mesh);
 
-    // エッジ
-    this._edgeMesh = new THREE.SkinnedMesh(geometry, this._createEdgeMaterial(), false);
-    this._edgeMesh.rotation.y = -90 * Math.PI / 180;
-    this.add(this._edgeMesh);
-
     // ミキサー
     this._mixer = new THREE.AnimationMixer(this._mesh);
     this._action.walk = this._mixer.clipAction(geometry.animations[2]);
     this._action.walk.setEffectiveWeight(1);
+    this._action.jump = this._mixer.clipAction(geometry.animations[0]);
+    this._action.jump.setEffectiveWeight(1);
+    this._action.jump.loop = THREE.LoopOnce;
     this._action.idle = this._mixer.clipAction(geometry.animations[1]);
     this._action.idle.setEffectiveWeight(1);
-
-    // ミキサー2
-    this._mixer2 = new THREE.AnimationMixer(this._edgeMesh);
-    this._action2.walk = this._mixer2.clipAction(geometry.animations[2]);
-    this._action2.walk.setEffectiveWeight(1);
-    this._action2.idle = this._mixer2.clipAction(geometry.animations[1]);
-    this._action2.idle.setEffectiveWeight(1);
   }
 
   /**
@@ -98,31 +88,9 @@ export default class Zensuke extends THREE.Object3D {
           type: 't',
           value: THREE.ImageUtils.loadTexture('model/zensuke.png')
         },
-        meshColor: {
-          type: 'v4',
-          value: new THREE.Vector4(material.color.r, material.color.g, material.color.b, 1)
-        },
         time: { type: "f", value: 1.0 },
         resolution: { type: "v2", value: new THREE.Vector2() }
       }
-    });
-  }
-
-  /**
-   * エッジ用マテリアルを生成します。
-   */
-  _createEdgeMaterial() {
-    return new THREE.ShaderMaterial({
-      vertexShader: glsl('../../glsl/zensukeEdgeVertex.glsl'),
-      fragmentShader: glsl('../../glsl/zensukeEdgeFragment.glsl'),
-      uniforms: {
-        edgeColor: {
-          type: 'v4',
-          value: new THREE.Vector4(0, 0, 0, 1)
-        }
-      },
-      side: THREE.BackSide,
-      skinning: true
     });
   }
 
@@ -132,7 +100,6 @@ export default class Zensuke extends THREE.Object3D {
   update() {
     let delta = this._clock.getDelta() * 1.5;
     this._mixer.update(delta);
-    this._mixer2.update(delta);
 
     // 歩いていれば前進させます。
     if(this._isWalking) {
@@ -149,7 +116,6 @@ export default class Zensuke extends THREE.Object3D {
   walk(angle) {
     // 歩きモーション開始
     this._action.walk.play();
-    this._action2.walk.play();
     // 歩いているフラグを立たせる
     this._isWalking = true;
 
@@ -159,11 +125,18 @@ export default class Zensuke extends THREE.Object3D {
   }
 
   /**
+   * ジャンプさせます。
+   */
+  jump() {
+    this._action.idle.crossFadeTo(this._action.jump, 3);
+    console.info('jump');
+  }
+
+  /**
    * 止めます。
    */
   idle() {
     this._action.walk.stop();
-    this._action2.walk.stop();
     // 歩いているフラグを折る
     this._isWalking = false;
   }

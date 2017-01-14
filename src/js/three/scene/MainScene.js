@@ -16,6 +16,7 @@ export default class MainScene extends THREE.Scene {
   constructor() {
     super();
 
+    this._onClickB = this._onClickB.bind(this);
     this._onMoveStick = this._onMoveStick.bind(this);
     this._onReleaseStick = this._onReleaseStick.bind(this);
 
@@ -41,6 +42,7 @@ export default class MainScene extends THREE.Scene {
     this._zenpad = new Zenpad('zenpadLayer');
     this._zenpad.on('moveStick', this._onMoveStick);
     this._zenpad.on('releaseStick', this._onReleaseStick);
+    this._zenpad.on('clickB', this._onClickB);
   }
 
   /**
@@ -63,5 +65,12 @@ export default class MainScene extends THREE.Scene {
    */
   _onReleaseStick() {
     this._zensuke.idle();
+  }
+
+  /**
+   * Bボタン押下時のハンドラーです。
+   */
+  _onClickB() {
+    this._zensuke.jump();
   }
 }
