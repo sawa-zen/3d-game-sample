@@ -24,7 +24,8 @@ export default class Zensuke extends THREE.Object3D {
     // 向き
     this._agnle = 0;
 
-    let loadResult = Loader.instance.getResult('zensuke');
+    this._loader = Loader.instance;
+    let loadResult = this._loader.getResult('zensuke');
     let jsonLoader = new THREE.JSONLoader();
     let parseData = jsonLoader.parse(loadResult, 'model/');
 
@@ -74,6 +75,11 @@ export default class Zensuke extends THREE.Object3D {
    * 表面マテリアルを生成します。
    */
   _createFaceMaterial(material) {
+    // トゥーンテクスチャ
+    let toonTexture = this._loader.getTexture('toon');
+    // モデルのテクスチャ
+    let map = this._loader.getTexture('zensukeMap');
+
     return new THREE.ShaderMaterial({
       vertexShader: glsl('../../glsl/zensukeVertex.glsl'),
       fragmentShader: glsl('../../glsl/zensukeFragment.glsl'),
@@ -84,11 +90,11 @@ export default class Zensuke extends THREE.Object3D {
         },
         toonTexture: {
           type: 't',
-          value: THREE.ImageUtils.loadTexture('images/texture/toon.png')
+          value: toonTexture
         },
         map: {
           type: 't',
-          value: THREE.ImageUtils.loadTexture('model/zensuke.png')
+          value: map
         },
         time: { type: "f", value: 1.0 },
         resolution: { type: "v2", value: new THREE.Vector2() }

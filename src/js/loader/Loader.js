@@ -60,6 +60,16 @@ export default class Loader extends THREE.EventDispatcher {
   }
 
   /**
+   * 指定したIDのテクスチャを取得します。
+   */
+  getTexture(id) {
+    let image = this.getResult(id);
+    let texture = new THREE.Texture(image);
+    texture.needsUpdate = true;
+    return texture;
+  }
+
+  /**
    * 読み込み完了時のハンドラーです。
    */
   _onComplete() {

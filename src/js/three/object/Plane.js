@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import Loader from '../../loader/Loader';
 
 /**
  * 地面クラスです。
@@ -20,7 +21,7 @@ export default class Plane extends THREE.Object3D {
     }
 
     // Material
-    let texture = THREE.ImageUtils.loadTexture("images/texture/tile.png");
+    let texture = Loader.instance.getTexture('tile');
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
     texture.repeat.set(24, 24);
     let material = new THREE.MeshPhongMaterial({

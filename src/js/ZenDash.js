@@ -21,6 +21,8 @@ class ZenDash {
     this._loader.load([
       { id: 'tile', url: 'images/texture/tile.png' },
       { id: 'zensuke', url: 'model/zensuke.json' },
+      { id: 'zensukeMap', url: 'model/zensuke.png' },
+      { id: 'toon', url: 'images/texture/toon.png' },
       { id: 'px', url: 'images/texture/s_px.jpg' },
       { id: 'nx', url: 'images/texture/s_nx.jpg' },
       { id: 'py', url: 'images/texture/s_py.jpg' },
