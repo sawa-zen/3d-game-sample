@@ -67,7 +67,7 @@ export default class Zensuke extends THREE.Object3D {
       material.skinning = true;
       fixMaterials.push(material);
     }
-    return new THREE.MeshFaceMaterial(fixMaterials);
+    return new THREE.MultiMaterial(fixMaterials);
   }
 
   /**
