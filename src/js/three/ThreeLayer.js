@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import MainScene from './scene/MainScene';
 import Camera from './camera/Camera';
 import Stats from 'stats.js';
+import GameModel from '../model/GameModel';
 
 /**
  * 3Dレイヤーのメインクラスです。
@@ -17,6 +18,9 @@ export default class ThreeLayer {
     this._tick = this._tick.bind(this);
     this._resize = this._resize.bind(this);
 
+    // モデル
+    this._model = GameModel.instance;
+
     // DOM
     this._wrapper = document.getElementById(domId);
 
@@ -29,7 +33,7 @@ export default class ThreeLayer {
     // レンダラー
     this._renderer = new THREE.WebGLRenderer({antialias: false});
     this._renderer.setClearColor(0xffffff);
-    this._renderer.setPixelRatio(2 / window.devicePixelRatio);
+    this._renderer.setPixelRatio(1);
     this._renderer.shadowMapEnabled = true;
     this._wrapper.appendChild(this._renderer.domElement);
 
@@ -53,6 +57,8 @@ export default class ThreeLayer {
     // 計測開始
     this._stats.begin();
 
+    // 比較係数を更新
+    this._model.updateTimeRatio();
     // シーンの更新
     this._scene.update();
     // 描画

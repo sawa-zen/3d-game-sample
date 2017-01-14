@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import glsl from 'glslify';
 import Loader from '../../loader/Loader';
+import GameModel from '../../model/GameModel';
 
 /**
  * Zensukeクラスです。
@@ -99,6 +100,7 @@ export default class Zensuke extends THREE.Object3D {
    * 更新します。
    */
   update() {
+    let timeRatio = GameModel.instance.timeRatio;
     let delta = this._clock.getDelta() * 1.5;
     this._mixer.update(delta);
 
@@ -106,7 +108,8 @@ export default class Zensuke extends THREE.Object3D {
     if(this._isWalking) {
       let axis = new THREE.Vector3(0, 1, 0);
       let rad = this._angle * Math.PI / 180;
-      let addVec = new THREE.Vector3(-this._velocity, 0, 0).applyAxisAngle(axis, rad);
+      let velocity = this._velocity * timeRatio;
+      let addVec = new THREE.Vector3(-velocity, 0, 0).applyAxisAngle(axis, rad);
       this.position.add(addVec);
     }
   }

@@ -13,12 +13,12 @@ export default class Plane extends THREE.Object3D {
     super();
 
     // Geometry
-    let geometry = new THREE.PlaneGeometry(200, 1000, 10, 10);
+    let geometry = new THREE.PlaneGeometry(200, 200, 10, 10);
 
     // Material
     let texture = THREE.ImageUtils.loadTexture("images/texture/tile.png");
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set(24, 160);
+    texture.repeat.set(24, 24);
     let material = new THREE.MeshPhongMaterial({
       map: texture
     });
