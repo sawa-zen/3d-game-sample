@@ -38,6 +38,7 @@ export default class MainScene extends THREE.Scene {
 
     // Zensuke
     this._zensuke = new Zensuke();
+    this._zensuke.position.y = 30;
     this.add(this._zensuke);
 
     // フォグ
@@ -55,6 +56,15 @@ export default class MainScene extends THREE.Scene {
    */
   update() {
     this._zensuke.update();
+
+    var rayStartPos = this._zensuke.position.clone().add(new THREE.Vector3(0, 0.5, 0));
+    var ray = new THREE.Raycaster(rayStartPos, new THREE.Vector3(0, -1, 0).normalize());
+    var objs = ray.intersectObjects(this._plane.children);
+
+    if(objs[0] && objs[0].distance > 0.55) {
+      this._zensuke.fall(objs[0].point.y);
+    }
+
     this._camera.update(this._zensuke.position);
     this._directionalLight.seek(this._zensuke);
   }

@@ -129,6 +129,19 @@ export default class Zensuke extends THREE.Object3D {
   }
 
   /**
+   * 落とします。
+   */
+  fall(targetY) {
+    let timeRatio = GameModel.instance.timeRatio;
+    let gravity = new THREE.Vector3(0, -0.5, 0).multiplyScalar(timeRatio);
+    let newPosition = this.position.clone().add(gravity);
+    if(newPosition.y < targetY) {
+      newPosition.y = targetY;
+    }
+    this.position.copy(newPosition);
+  }
+
+  /**
    * ジャンプさせます。
    */
   jump() {
