@@ -29,7 +29,7 @@ export default class ThreeLayer {
     // レンダラー
     this._renderer = new THREE.WebGLRenderer({antialias: false});
     this._renderer.setClearColor(0xffffff);
-    this._renderer.setPixelRatio(0.5);
+    this._renderer.setPixelRatio(2 / window.devicePixelRatio);
     this._renderer.shadowMapEnabled = true;
     this._wrapper.appendChild(this._renderer.domElement);
 

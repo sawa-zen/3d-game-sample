@@ -31,7 +31,6 @@ export default class MainScene extends THREE.Scene {
     // 平行光源
     this._directionalLight = new DirectionalLight();
     this.add(this._directionalLight);
-    this._directionalLight.showHelper();
 
     // 地面
     this._plane = new Plane();

@@ -10,20 +10,19 @@ export default class DirectionalLight extends THREE.DirectionalLight {
    * @constructor
    */
   constructor() {
-    super(0xffffff);
+    super(0xffffff, 1);
 
-    this._shadowSize = 5;
+    this._shadowSize = 50;
     this._relativePosition = new THREE.Vector3(10, 10, -10);
 
     this.position.copy(this._relativePosition);
 
     this.castShadow = true;
     this.shadow.camera.top = this._shadowSize;
-    this.shadow.camera.left = -this._shadowSize;
+    this.shadow.camera.left = -this._shadowSize / 3;
     this.shadow.camera.right = this._shadowSize;
     this.shadow.camera.bottom = -this._shadowSize;
-    this.shadow.mapSize.width = 128;
-    this.shadow.mapSize.height = 128;
+    this.shadow.mapSize.width = this.shadow.mapSize.height = 512;
 
     this._shadowHelper = new THREE.CameraHelper(this.shadow.camera);
   }
