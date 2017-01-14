@@ -20,7 +20,13 @@ class ZenDash {
     this._loader = Loader.instance;
     this._loader.load([
       { id: 'tile', url: 'images/texture/tile.png' },
-      { id: 'zensuke', url: 'model/zensuke.json' }
+      { id: 'zensuke', url: 'model/zensuke.json' },
+      { id: 'px', url: 'images/texture/s_px.jpg' },
+      { id: 'nx', url: 'images/texture/s_nx.jpg' },
+      { id: 'py', url: 'images/texture/s_py.jpg' },
+      { id: 'ny', url: 'images/texture/s_ny.jpg' },
+      { id: 'pz', url: 'images/texture/s_pz.jpg' },
+      { id: 'nz', url: 'images/texture/s_nz.jpg' }
     ]);
     this._loader.addEventListener('complete', this._onCompleteLoad);
   }

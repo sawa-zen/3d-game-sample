@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import Camera from '../camera/Camera';
+import SkyBox from '../object/SkyBox';
 import Plane from '../object/Plane';
 import Zensuke from '../object/Zensuke';
 import Zenpad from 'zenpad.js';
@@ -32,6 +33,10 @@ export default class MainScene extends THREE.Scene {
     this._directionalLight = new DirectionalLight();
     this.add(this._directionalLight);
 
+    // スカイボックス
+    let skybox = new SkyBox();
+    this.add(skybox);
+
     // 地面
     this._plane = new Plane();
     this.add(this._plane);
@@ -61,7 +66,6 @@ export default class MainScene extends THREE.Scene {
     var ray = new THREE.Raycaster(rayStartPos, new THREE.Vector3(0, -1, 0).normalize());
     var objs = ray.intersectObjects(this._plane.children);
 
-    console.info(objs[0]);
     if(objs[0] && objs[0].distance > 0.55) {
       this._zensuke.fall(objs[0].point.y);
     }
