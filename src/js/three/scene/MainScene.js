@@ -25,7 +25,7 @@ export default class MainScene extends THREE.Scene {
     this._camera = Camera.instance;
 
     // 環境光源
-    let ambientLight = new THREE.AmbientLight(0xffffff);
+    let ambientLight = new THREE.AmbientLight(0xaaaaaa);
     this.add(ambientLight);
 
     // 平行光源
@@ -38,7 +38,7 @@ export default class MainScene extends THREE.Scene {
 
     // Zensuke
     this._zensuke = new Zensuke();
-    this._zensuke.position.y = 30;
+    this._zensuke.position.y = 40;
     this.add(this._zensuke);
 
     // フォグ
