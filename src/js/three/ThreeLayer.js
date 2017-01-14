@@ -27,9 +27,9 @@ export default class ThreeLayer {
     this._camera = Camera.instance;
 
     // レンダラー
-    this._renderer = new THREE.WebGLRenderer({antialias: true});
+    this._renderer = new THREE.WebGLRenderer({antialias: false});
     this._renderer.setClearColor(0xffffff);
-    this._renderer.setPixelRatio(1);
+    this._renderer.setPixelRatio(0.5);
     this._wrapper.appendChild(this._renderer.domElement);
 
     this._resize();
