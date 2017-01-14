@@ -57,10 +57,11 @@ export default class MainScene extends THREE.Scene {
   update() {
     this._zensuke.update();
 
-    var rayStartPos = this._zensuke.position.clone().add(new THREE.Vector3(0, 0.5, 0));
+    var rayStartPos = this._zensuke.position.clone().add(new THREE.Vector3(0, 5, 0));
     var ray = new THREE.Raycaster(rayStartPos, new THREE.Vector3(0, -1, 0).normalize());
     var objs = ray.intersectObjects(this._plane.children);
 
+    console.info(objs[0]);
     if(objs[0] && objs[0].distance > 0.55) {
       this._zensuke.fall(objs[0].point.y);
     }

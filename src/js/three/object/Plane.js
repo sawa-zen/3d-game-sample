@@ -14,6 +14,10 @@ export default class Plane extends THREE.Object3D {
 
     // Geometry
     let geometry = new THREE.PlaneGeometry(200, 200, 10, 10);
+    for (var i = 0; i < geometry.vertices.length; i++) {
+      var vertex = geometry.vertices[i];
+      vertex.z = Math.random() * 10;
+    }
 
     // Material
     let texture = THREE.ImageUtils.loadTexture("images/texture/tile.png");
