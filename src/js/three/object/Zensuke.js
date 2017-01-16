@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import glsl from 'glslify';
 import Loader from '../../loader/Loader';
 import GameModel from '../../model/GameModel';
+import Action from './Action';
 
 /**
  * Zensukeクラスです。
@@ -48,13 +49,9 @@ export default class Zensuke extends THREE.Object3D {
 
     // ミキサー
     this._mixer = new THREE.AnimationMixer(this._mesh);
-    this._action.walk = this._mixer.clipAction(geometry.animations[2]);
-    this._action.walk.setEffectiveWeight(1);
-    this._action.jump = this._mixer.clipAction(geometry.animations[0]);
-    this._action.jump.setEffectiveWeight(1);
-    this._action.jump.loop = THREE.LoopOnce;
-    this._action.idle = this._mixer.clipAction(geometry.animations[1]);
-    this._action.idle.setEffectiveWeight(1);
+    this._action.walk = new Action(this._mixer.clipAction(geometry.animations[2]), 0, true);
+    this._action.jump = new Action(this._mixer.clipAction(geometry.animations[0]), 0, false);
+    this._action.idle = new Action(this._mixer.clipAction(geometry.animations[1]), 0, false);
   }
 
   /**
@@ -126,7 +123,12 @@ export default class Zensuke extends THREE.Object3D {
   walk(angle) {
     if(!this._isWalking) {
       // 歩きモーション開始
+      this._action.walk.reset();
       this._action.walk.play();
+      this._action.walk.toWeight(1, 50, (weight) => {
+        this._action.walk.setAction(weight);
+        this._action.idle.setAction(1 - weight);
+      });
       // 歩いているフラグを立たせる
       this._isWalking = true;
     }
@@ -161,7 +163,12 @@ export default class Zensuke extends THREE.Object3D {
    * 止めます。
    */
   idle() {
-    this._action.walk.stop();
+    this._action.idle.reset();
+		this._action.idle.play();
+    this._action.idle.toWeight(1, 50, (weight) => {
+      this._action.idle.setAction(weight);
+      this._action.walk.setAction(1 - weight);
+    });
     // 歩いているフラグを折る
     this._isWalking = false;
   }

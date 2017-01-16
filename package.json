@@ -24,6 +24,7 @@
     "preloader": "^2.1.0",
     "stats.js": "^0.17.0",
     "three": "^0.83.0",
+    "tween.js": "^16.3.5",
     "watchify": "^3.8.0",
     "zenpad.js": "^0.1.0"
   }

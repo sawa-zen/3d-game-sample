@@ -3,6 +3,7 @@ import MainScene from './scene/MainScene';
 import Camera from './camera/Camera';
 import Stats from 'stats.js';
 import GameModel from '../model/GameModel';
+import TWEEN from 'tween.js';
 
 /**
  * 3Dレイヤーのメインクラスです。
@@ -57,6 +58,8 @@ export default class ThreeLayer {
     // 計測開始
     this._stats.begin();
 
+    // TWEENの更新
+    TWEEN.update();
     // 比較係数を更新
     this._model.updateTimeRatio();
     // シーンの更新
