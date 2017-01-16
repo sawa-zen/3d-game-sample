@@ -1,19 +1,7 @@
 varying vec2 vUv;
 varying vec3 vNormal;
 
-#ifdef USE_SKINNING
-
-  uniform mat4 bindMatrix;
-  uniform mat4 bindMatrixInverse;
-  uniform mat4 boneMatrices[MAX_BONES];
-
-  // ボーンのマトリックスを取得します。
-  mat4 getBoneMatrix(const in float i) {
-    mat4 bone = boneMatrices[ int(i) ];
-    return bone;
-  }
-
-#endif
+#include <skinning_pars_vertex>
 
 void main() {
   vUv = uv;
