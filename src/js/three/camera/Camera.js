@@ -17,7 +17,7 @@ export default class Camera extends THREE.PerspectiveCamera {
   constructor() {
     super(45, window.innerWidth / window.innerHeight, 1, 500);
 
-    this._maxDistance = 25;
+    this._xDistance = 30;
     this._yDistance = 15;
 
     this.position.x = this._xDistance;
@@ -30,23 +30,15 @@ export default class Camera extends THREE.PerspectiveCamera {
    */
   update(targetPosition) {
     let lookAtPositon = targetPosition.clone().add(new THREE.Vector3(0, 3, 0));
+    this.position.x = targetPosition.x + this._xDistance;
 
-    // ターゲットとカメラを結ぶベクトル
-    let targetToCamera = this.position.clone().sub(lookAtPositon);
-    // 距離を算出
-    let distance = targetToCamera.length();
-
-    if(distance > this._maxDistance) {
-      targetToCamera = targetToCamera.normalize().multiplyScalar(this._maxDistance);
+    let newY = targetPosition.y + this._yDistance;
+    if(newY < this._yDistance) {
+      newY = this._yDistance;
     }
+    this.position.y = newY;
 
-    let newPosition = targetToCamera.add(targetPosition);
-
-    if(newPosition.y < this._yDistance) {
-      newPosition.y = this._yDistance;
-    }
-
-    this.position.copy(newPosition);
+    this.position.z = targetPosition.z;
     this.lookAt(lookAtPositon);
   }
 }
