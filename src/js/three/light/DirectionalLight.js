@@ -5,6 +5,11 @@ import * as THREE from 'three';
  */
 export default class DirectionalLight extends THREE.DirectionalLight {
 
+  /** インスタンス */
+  static get instance() {
+    return DirectionalLight._instance || new DirectionalLight();
+  }
+
   /**
    * コンストラクター
    * @constructor
@@ -25,6 +30,8 @@ export default class DirectionalLight extends THREE.DirectionalLight {
     this.shadow.mapSize.width = this.shadow.mapSize.height = 512;
 
     this._shadowHelper = new THREE.CameraHelper(this.shadow.camera);
+
+    DirectionalLight._instance = this;
   }
 
   /**
