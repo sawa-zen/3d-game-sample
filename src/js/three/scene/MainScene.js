@@ -30,7 +30,7 @@ export default class MainScene extends THREE.Scene {
     this.add(ambientLight);
 
     // 平行光源
-    this._directionalLight = new DirectionalLight();
+    this._directionalLight = DirectionalLight.instace;
     this.add(this._directionalLight);
 
     // スカイボックス
