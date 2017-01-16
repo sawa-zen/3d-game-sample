@@ -48,7 +48,6 @@ export default class Action {
    * ウェイトを変化させます。
    */
   toWeight(target, duration, step) {
-    console.info(this.weight_, target, duration);
     let tween = new TWEEN.Tween({ weight: this.weight_ })
       .to({ weight: target }, duration)
       .onUpdate(function() { step(this.weight); })

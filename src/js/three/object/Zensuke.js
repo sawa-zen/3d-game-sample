@@ -19,7 +19,7 @@ export default class Zensuke extends THREE.Object3D {
     // アクション
     this._action = {};
     // 速度
-    this._velocity = 0.35;
+    this._velocity = 0.37;
     // 歩いているかどうか
     this._isWalking = false;
     // 向き
@@ -104,7 +104,7 @@ export default class Zensuke extends THREE.Object3D {
    */
   update() {
     let timeRatio = GameModel.instance.timeRatio;
-    let delta = this._clock.getDelta() * 1.7;
+    let delta = this._clock.getDelta();
     this._mixer.update(delta);
 
     // 歩いていれば前進させます。
@@ -155,8 +155,13 @@ export default class Zensuke extends THREE.Object3D {
    * ジャンプさせます。
    */
   jump() {
-    this._action.idle.crossFadeTo(this._action.jump, 3);
-    console.info('jump');
+    // モーション開始
+    this._action.jump.reset();
+    this._action.jump.play();
+    this._action.jump.toWeight(1, 50, (weight) => {
+      this._action.jump.setAction(weight);
+      this._action.idle.setAction(1 - weight);
+    });
   }
 
   /**
