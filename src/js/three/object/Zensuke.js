@@ -3,11 +3,15 @@ import glsl from 'glslify';
 import Loader from '../../loader/Loader';
 import GameModel from '../../model/GameModel';
 import Action from './Action';
+import Map from '../map/Map';
 
 /**
  * Zensukeクラスです。
  */
 export default class Zensuke extends THREE.Object3D {
+
+  /** 高さ */
+  get height() { return this._height; }
 
   /**
    * コンストラクター
@@ -27,7 +31,7 @@ export default class Zensuke extends THREE.Object3D {
     // 向き
     this._agnle = 0;
     // 重力
-    this._gravity = new THREE.Vector3(0, -0.5, 0);
+    this._gravity = new THREE.Vector3(0, -0.05, 0);
 
     this._loader = Loader.instance;
     let loadResult = this._loader.getResult('zensuke');
@@ -47,6 +51,7 @@ export default class Zensuke extends THREE.Object3D {
 
     // メッシュ
     this._mesh = new THREE.SkinnedMesh(geometry, material, false);
+    this._mesh.geometry.computeBoundingBox();
     this._mesh.rotation.y = -90 * Math.PI / 180;
     this._mesh.castShadow = true;
     this.add(this._mesh);
@@ -56,6 +61,13 @@ export default class Zensuke extends THREE.Object3D {
     this._action.walk = new Action(this._mixer.clipAction(geometry.animations[2]), 0, true);
     this._action.jump = new Action(this._mixer.clipAction(geometry.animations[0]), 0, false);
     this._action.idle = new Action(this._mixer.clipAction(geometry.animations[1]), 0, false);
+
+    // 境界ヘルパー
+    this._boxHelper = new THREE.BoxHelper(this._mesh);
+    this.add(this._boxHelper);
+
+    // 高さ
+    this._height = this._mesh.geometry.boundingBox.max.y - this._mesh.geometry.boundingBox.min.y;
   }
 
   /**
@@ -127,8 +139,22 @@ export default class Zensuke extends THREE.Object3D {
     let delta = this._clock.getDelta();
     this._mixer.update(delta);
 
+    let underFace = Map.instance.getUnderFace(this);
+
+    if(!underFace) {
+      this._velocity.add(this._gravity);
+    } else if(underFace.distance > this._height) {
+      this._velocity.add(this._gravity);
+    }
+
     // 移動
     this.position.add(this._velocity);
+
+    // 地上に立たせる処理
+    if(underFace && this.position.y < underFace.point.y) {
+      this.position.y = underFace.point.y;
+      this._velocity.y = 0;
+    }
   }
 
   /**
@@ -157,18 +183,18 @@ export default class Zensuke extends THREE.Object3D {
     this.rotation.y = angle * Math.PI / 180;
   }
 
-  /**
-   * 落とします。
-   */
-  fall(targetY) {
-    // let timeRatio = GameModel.instance.timeRatio;
-    // let gravity = this._gravity.clone().multiplyScalar(timeRatio);
-    // let newPosition = this.position.clone().add(gravity);
-    // if(newPosition.y < targetY) {
-    //   newPosition.y = targetY;
-    // }
-    //this.position.copy(newPosition);
-  }
+  // #<{(|*
+  //  * 落とします。
+  //  |)}>#
+  // fall(targetY) {
+  //   let timeRatio = GameModel.instance.timeRatio;
+  //   let gravity = this._gravity.clone().multiplyScalar(timeRatio);
+  //   let newPosition = this.position.clone().add(gravity);
+  //   if(newPosition.y < targetY) {
+  //     newPosition.y = targetY;
+  //   }
+  //   this.position.copy(newPosition);
+  // }
 
   /**
    * ジャンプさせます。
@@ -181,6 +207,7 @@ export default class Zensuke extends THREE.Object3D {
       this._action.jump.setAction(weight);
       this._action.idle.setAction(1 - weight);
     });
+    this._addVectorToVelociry(new THREE.Vector3(0, 1.5, 0));
   }
 
   /**

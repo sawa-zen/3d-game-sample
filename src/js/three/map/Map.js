@@ -6,6 +6,11 @@ import Loader from '../../loader/Loader';
  */
 export default class Map extends THREE.Object3D {
 
+  /** インスタンス */
+  static get instance() {
+    return Map._instance || new Map();
+  }
+
   /**
    * コンストラクター
    * @constructor
@@ -38,5 +43,16 @@ export default class Map extends THREE.Object3D {
     mesh.rotation.z = 90 * Math.PI / 180;
     mesh.receiveShadow = true;
     this.add(mesh);
+
+    Map._instance = this;
+  }
+
+  /**
+   * ターゲット真下のfaceを取得します。
+   */
+  getUnderFace(target) {
+    var rayStartPos = target.position.clone().add(new THREE.Vector3(0, 5, 0));
+    var ray = new THREE.Raycaster(rayStartPos, new THREE.Vector3(0, -1, 0).normalize());
+    return ray.intersectObjects(this.children)[0];
   }
 }
