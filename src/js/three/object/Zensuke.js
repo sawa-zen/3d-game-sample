@@ -39,7 +39,12 @@ export default class Zensuke extends THREE.Object3D {
     geometry.normalsNeedUpdate = true;
 
     // マテリアル
-    let material = this._createBodyMaterial(parseData.materials);
+    let material = new THREE.MeshToonMaterial({
+      skinning: true,
+      map: this._loader.getTexture('zensukeMap'),
+      reflectivity: 0,
+      shininess: 0
+    });//this._createBodyMaterial(parseData.materials);
 
     // メッシュ
     this._mesh = new THREE.SkinnedMesh(geometry, material, false);

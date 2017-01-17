@@ -19,15 +19,16 @@ export default class Plane extends THREE.Object3D {
       var vertex = geometry.vertices[i];
       vertex.z = Math.random() * 10;
     }
-    geometry.computeFaceNormals();
     geometry.computeVertexNormals();
+    geometry.computeFaceNormals();
     geometry.normalsNeedUpdate = true;
+    geometry.uvsNeedUpdate = true;
 
     // Material
     let texture = Loader.instance.getTexture('tile');
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
     texture.repeat.set(24, 24);
-    let material = new THREE.MeshPhongMaterial({
+    let material = new THREE.MeshToonMaterial({
       map: texture
     });
 

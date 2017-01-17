@@ -15,7 +15,7 @@ export default class DirectionalLight extends THREE.DirectionalLight {
    * @constructor
    */
   constructor() {
-    super(0xffffff);
+    super(0xffffff, 0.5);
 
     this._shadowSize = 50;
     this._relativePosition = new THREE.Vector3(10, 10, -10);
