@@ -26,7 +26,7 @@ export default class MainScene extends THREE.Scene {
     this._camera = Camera.instance;
 
     // 環境光源
-    let ambientLight = new THREE.AmbientLight(0xaaaaaa);
+    let ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     this.add(ambientLight);
 
     // 平行光源
@@ -47,7 +47,7 @@ export default class MainScene extends THREE.Scene {
     this.add(this._zensuke);
 
     // フォグ
-    this.fog = new THREE.Fog(0x000000, 50, 200);
+    this.fog = new THREE.Fog(0xc1edff, 50, 200);
 
     // zenpadを生成
     this._zenpad = new Zenpad('zenpadLayer');
