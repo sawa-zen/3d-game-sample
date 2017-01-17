@@ -19,11 +19,15 @@ export default class Zensuke extends THREE.Object3D {
     // アクション
     this._action = {};
     // 速度
-    this._velocity = 0.35;
+    this._velocity = new THREE.Vector3(0, 0, 0);
+    // 歩くスピード
+    this._walkAcceleration = 0.01;
     // 歩いているかどうか
     this._isWalking = false;
     // 向き
     this._agnle = 0;
+    // 重力
+    this._gravity = new THREE.Vector3(0, -0.5, 0);
 
     this._loader = Loader.instance;
     let loadResult = this._loader.getResult('zensuke');
@@ -100,6 +104,21 @@ export default class Zensuke extends THREE.Object3D {
   }
 
   /**
+   * 速度にベクトルを足します。
+   */
+  _addVectorToVelociry(vec) {
+    let velocity = this._velocity.clone();
+    velocity.add(vec);
+    let xzVelocity = new THREE.Vector2(velocity.x, velocity.z);
+    if(xzVelocity.length() > 0.35) {
+      xzVelocity.normalize().multiplyScalar(0.35);
+      velocity.x = xzVelocity.x;
+      velocity.z = xzVelocity.z;
+    }
+    this._velocity = velocity;
+  }
+
+  /**
    * 更新します。
    */
   update() {
@@ -111,10 +130,11 @@ export default class Zensuke extends THREE.Object3D {
     if(this._isWalking) {
       let axis = new THREE.Vector3(0, 1, 0);
       let rad = this._angle * Math.PI / 180;
-      let velocity = this._velocity * timeRatio;
-      let addVec = new THREE.Vector3(-velocity, 0, 0).applyAxisAngle(axis, rad);
-      this.position.add(addVec);
+      let walkAcceleration = this._walkAcceleration * timeRatio;
+      this._addVectorToVelociry(new THREE.Vector3(-walkAcceleration, 0, 0).applyAxisAngle(axis, rad));
     }
+
+    this.position.add(this._velocity);
   }
 
   /**
@@ -143,7 +163,7 @@ export default class Zensuke extends THREE.Object3D {
    */
   fall(targetY) {
     let timeRatio = GameModel.instance.timeRatio;
-    let gravity = new THREE.Vector3(0, -0.5, 0).multiplyScalar(timeRatio);
+    let gravity = this._gravity.clone().multiplyScalar(timeRatio);
     let newPosition = this.position.clone().add(gravity);
     if(newPosition.y < targetY) {
       newPosition.y = targetY;
@@ -158,7 +178,7 @@ export default class Zensuke extends THREE.Object3D {
     // モーション開始
     this._action.jump.reset();
     this._action.jump.play();
-    this._action.jump.toWeight(1, 50, (weight) => {
+    this._action.jump.toWeight(1, 100, (weight) => {
       this._action.jump.setAction(weight);
       this._action.idle.setAction(1 - weight);
     });
@@ -169,7 +189,7 @@ export default class Zensuke extends THREE.Object3D {
    */
   idle() {
     this._action.idle.reset();
-		this._action.idle.play();
+    this._action.idle.play();
     this._action.idle.toWeight(1, 50, (weight) => {
       this._action.idle.setAction(weight);
       this._action.walk.setAction(1 - weight);
