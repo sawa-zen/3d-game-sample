@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import Camera from '../camera/Camera';
 import SkyBox from '../object/SkyBox';
-import Plane from '../object/Plane';
+import Map from '../map/Map';
 import Zensuke from '../object/Zensuke';
 import Zenpad from 'zenpad.js';
 import DirectionalLight from '../light/DirectionalLight';
@@ -38,8 +38,8 @@ export default class MainScene extends THREE.Scene {
     this.add(skybox);
 
     // 地面
-    this._plane = new Plane();
-    this.add(this._plane);
+    this._map = new Map();
+    this.add(this._map);
 
     // Zensuke
     this._zensuke = new Zensuke();
@@ -60,17 +60,18 @@ export default class MainScene extends THREE.Scene {
    * 更新します。
    */
   update() {
+    // Zensukeの更新
     this._zensuke.update();
 
-    var rayStartPos = this._zensuke.position.clone().add(new THREE.Vector3(0, 5, 0));
-    var ray = new THREE.Raycaster(rayStartPos, new THREE.Vector3(0, -1, 0).normalize());
-    var target = ray.intersectObjects(this._plane.children)[0];
-
-    if(!target) {
-      this._zensuke.fall(-1000);
-    } else if(target && target.distance > 0.55) {
-      this._zensuke.fall(target.point.y);
-    }
+    // var rayStartPos = this._zensuke.position.clone().add(new THREE.Vector3(0, 5, 0));
+    // var ray = new THREE.Raycaster(rayStartPos, new THREE.Vector3(0, -1, 0).normalize());
+    // var target = ray.intersectObjects(this._map.children)[0];
+    //
+    // if(!target) {
+    //   this._zensuke.fall(-1000);
+    // } else if(target && target.distance > 0.55) {
+    //   this._zensuke.fall(target.point.y);
+    // }
 
     this._camera.update(this._zensuke.position);
     this._directionalLight.seek(this._zensuke);
@@ -80,7 +81,7 @@ export default class MainScene extends THREE.Scene {
    * スティックが動かされた際のハンドラーです。
    */
   _onMoveStick(event) {
-    this._zensuke.walk(event.angle);
+    this._zensuke.walk(-(event.angle + 90));
   }
 
   /**

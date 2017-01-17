@@ -21,7 +21,7 @@ export default class Zensuke extends THREE.Object3D {
     // 速度
     this._velocity = new THREE.Vector3(0, 0, 0);
     // 歩くスピード
-    this._walkAcceleration = 0.01;
+    this._walkAcceleration = 0.1;
     // 歩いているかどうか
     this._isWalking = false;
     // 向き
@@ -113,7 +113,7 @@ export default class Zensuke extends THREE.Object3D {
     if(xzVelocity.length() > 0.35) {
       xzVelocity.normalize().multiplyScalar(0.35);
       velocity.x = xzVelocity.x;
-      velocity.z = xzVelocity.z;
+      velocity.z = xzVelocity.y;
     }
     this._velocity = velocity;
   }
@@ -122,18 +122,12 @@ export default class Zensuke extends THREE.Object3D {
    * 更新します。
    */
   update() {
+    // モデルのアニメーション更新
     let timeRatio = GameModel.instance.timeRatio;
     let delta = this._clock.getDelta();
     this._mixer.update(delta);
 
-    // 歩いていれば前進させます。
-    if(this._isWalking) {
-      let axis = new THREE.Vector3(0, 1, 0);
-      let rad = this._angle * Math.PI / 180;
-      let walkAcceleration = this._walkAcceleration * timeRatio;
-      this._addVectorToVelociry(new THREE.Vector3(-walkAcceleration, 0, 0).applyAxisAngle(axis, rad));
-    }
-
+    // 移動
     this.position.add(this._velocity);
   }
 
@@ -153,22 +147,27 @@ export default class Zensuke extends THREE.Object3D {
       this._isWalking = true;
     }
 
+    let timeRatio = GameModel.instance.timeRatio;
+    let axis = new THREE.Vector3(0, 1, 0);
+    let rad = angle * Math.PI / 180;
+    let walkAcceleration = this._walkAcceleration * timeRatio;
+    this._addVectorToVelociry(new THREE.Vector3(-walkAcceleration, 0, 0).applyAxisAngle(axis, rad));
+
     // 向きを変える
-    this._angle = -(angle + 90);
-    this.rotation.y = this._angle * Math.PI / 180;
+    this.rotation.y = angle * Math.PI / 180;
   }
 
   /**
    * 落とします。
    */
   fall(targetY) {
-    let timeRatio = GameModel.instance.timeRatio;
-    let gravity = this._gravity.clone().multiplyScalar(timeRatio);
-    let newPosition = this.position.clone().add(gravity);
-    if(newPosition.y < targetY) {
-      newPosition.y = targetY;
-    }
-    this.position.copy(newPosition);
+    // let timeRatio = GameModel.instance.timeRatio;
+    // let gravity = this._gravity.clone().multiplyScalar(timeRatio);
+    // let newPosition = this.position.clone().add(gravity);
+    // if(newPosition.y < targetY) {
+    //   newPosition.y = targetY;
+    // }
+    //this.position.copy(newPosition);
   }
 
   /**
@@ -196,5 +195,7 @@ export default class Zensuke extends THREE.Object3D {
     });
     // 歩いているフラグを折る
     this._isWalking = false;
+    // xzの速度を0に
+    this._velocity.x = this._velocity.z = 0;
   }
 }
