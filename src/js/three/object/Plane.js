@@ -28,7 +28,7 @@ export default class Plane extends THREE.Object3D {
     let texture = Loader.instance.getTexture('tile');
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
     texture.repeat.set(24, 24);
-    let material = new THREE.MeshToonMaterial({
+    let material = new THREE.MeshPhongMaterial({
       map: texture
     });
 

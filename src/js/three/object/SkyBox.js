@@ -34,13 +34,19 @@ export default class SkyBox extends THREE.Object3D {
     // メッシュ
     var mesh = new THREE.Mesh(
       new THREE.BoxGeometry(500, 500, 500, 1, 1, 1),
-      new THREE.ShaderMaterial({
-        fragmentShader: cubeShader.fragmentShader,
-        vertexShader: cubeShader.vertexShader,
-        uniforms: cubeShader.uniforms,
+      new THREE.MeshBasicMaterial({
+        color: 0xc1edff,
         depthWrite: false,
+        fog: false,
         side: THREE.BackSide
       })
+      // new THREE.ShaderMaterial({
+      //   fragmentShader: cubeShader.fragmentShader,
+      //   vertexShader: cubeShader.vertexShader,
+      //   uniforms: cubeShader.uniforms,
+      //   depthWrite: false,
+      //   side: THREE.BackSide
+      // })
     );
 
     this.add(mesh);
