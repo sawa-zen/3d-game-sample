@@ -144,7 +144,6 @@ export default class Zensuke extends THREE.Object3D {
       return;
     }
     this._currentAction = actionName;
-    console.info(this._currentAction);
     this._action[actionName].reset();
     this._action[actionName].play();
     this._action[actionName].toWeight(1, 150, (weight) => {
