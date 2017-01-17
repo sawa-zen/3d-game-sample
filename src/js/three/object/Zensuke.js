@@ -19,7 +19,7 @@ export default class Zensuke extends THREE.Object3D {
     // アクション
     this._action = {};
     // 速度
-    this._velocity = 0.37;
+    this._velocity = 0.35;
     // 歩いているかどうか
     this._isWalking = false;
     // 向き
