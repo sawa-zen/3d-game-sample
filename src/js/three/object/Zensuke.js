@@ -132,6 +132,9 @@ export default class Zensuke extends THREE.Object3D {
       velocity.x = xzVelocity.x;
       velocity.z = xzVelocity.y;
     }
+    if(velocity.y < -1.2) {
+      velocity.y = -1.2;
+    }
     this._velocity = velocity;
   }
 
@@ -143,10 +146,11 @@ export default class Zensuke extends THREE.Object3D {
     if(this._currentAction == actionName) {
       return;
     }
+    console.info(actionName);
     this._currentAction = actionName;
     this._action[actionName].reset();
     this._action[actionName].play();
-    this._action[actionName].toWeight(1, 150, (weight) => {
+    this._action[actionName].toWeight(1, 200, (weight) => {
       _.each(this._action, (value, key) => {
         if(key == actionName) {
           value.setAction(weight);
@@ -199,7 +203,7 @@ export default class Zensuke extends THREE.Object3D {
     } else {
       if(this._velocity.y > 0) {
         this._changeAction('jump');
-      } else if(this._velocity < 0) {
+      } else if(this._velocity.y < -0.5) {
         this._changeAction('fall');
       }
     }
@@ -220,24 +224,12 @@ export default class Zensuke extends THREE.Object3D {
   }
 
   /**
-   * 落とします。
-   */
-  fall() {
-    // this._action.fall.weight = 0;
-    // this._action.fall.reset();
-    // this._action.fall.play();
-    // this._action.fall.toWeight(1, 100, (weight) => {
-    //   this._action.fall.setAction(weight);
-    //   this._action.jump.setAction(1 - weight);
-    //   this._action.idle.setAction(1 - weight);
-    //   this._action.walk.setAction(1 - weight);
-    // });
-  }
-
-  /**
    * ジャンプさせます。
    */
   jump() {
+    if(!this._isLanding) {
+      return;
+    }
     this._addVectorToVelociry(new THREE.Vector3(0, 2, 0));
   }
 
