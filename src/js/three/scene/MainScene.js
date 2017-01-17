@@ -22,6 +22,11 @@ export default class MainScene extends THREE.Scene {
     this._onMoveStick = this._onMoveStick.bind(this);
     this._onReleaseStick = this._onReleaseStick.bind(this);
 
+    // スティックが動いているか否か
+    this._stickIsMoving = false;
+    // スティックの倒れている向き
+    this._stickAngle = 0;
+
     // カメラ
     this._camera = Camera.instance;
 
@@ -54,6 +59,7 @@ export default class MainScene extends THREE.Scene {
     this._zenpad.on('moveStick', this._onMoveStick);
     this._zenpad.on('releaseStick', this._onReleaseStick);
     this._zenpad.on('clickB', this._onClickB);
+    document.addEventListener('keydown', this._onClickB);
   }
 
   /**
@@ -61,6 +67,9 @@ export default class MainScene extends THREE.Scene {
    */
   update() {
     // Zensukeの更新
+    if(this._stickIsMoving) {
+      this._zensuke.move(this._stickAngle);
+    }
     this._zensuke.update();
 
     this._camera.update(this._zensuke.position);
@@ -71,7 +80,8 @@ export default class MainScene extends THREE.Scene {
    * スティックが動かされた際のハンドラーです。
    */
   _onMoveStick(event) {
-    this._zensuke.walk(-(event.angle + 90));
+    this._stickAngle = -(event.angle + 90);
+    this._stickIsMoving = true;
   }
 
   /**
@@ -79,6 +89,7 @@ export default class MainScene extends THREE.Scene {
    */
   _onReleaseStick() {
     this._zensuke.idle();
+    this._stickIsMoving = false;
   }
 
   /**

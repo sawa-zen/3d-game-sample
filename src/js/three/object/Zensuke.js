@@ -1,5 +1,7 @@
 import * as THREE from 'three';
+import TWEEN from 'tween.js';
 import glsl from 'glslify';
+import {_} from 'lodash';
 import Loader from '../../loader/Loader';
 import GameModel from '../../model/GameModel';
 import Action from './Action';
@@ -22,16 +24,18 @@ export default class Zensuke extends THREE.Object3D {
 
     // アクション
     this._action = {};
+    // カレントアクション名
+    this._currentAction = 'idle';
     // 速度
     this._velocity = new THREE.Vector3(0, 0, 0);
     // 歩くスピード
-    this._walkAcceleration = 0.1;
-    // 歩いているかどうか
-    this._isWalking = false;
+    this._walkAcceleration = 0.18;
     // 向き
     this._agnle = 0;
     // 重力
-    this._gravity = new THREE.Vector3(0, -0.05, 0);
+    this._gravity = new THREE.Vector3(0, -0.08, 0);
+    // 着地しているか否か
+    this._isLanding = false;
 
     this._loader = Loader.instance;
     let loadResult = this._loader.getResult('zensuke');
@@ -58,13 +62,14 @@ export default class Zensuke extends THREE.Object3D {
 
     // ミキサー
     this._mixer = new THREE.AnimationMixer(this._mesh);
-    this._action.walk = new Action(this._mixer.clipAction(geometry.animations[2]), 0, true);
-    this._action.jump = new Action(this._mixer.clipAction(geometry.animations[0]), 0, false);
-    this._action.idle = new Action(this._mixer.clipAction(geometry.animations[1]), 0, false);
+    this._action.fall = new Action(this._mixer.clipAction(geometry.animations[0]), 0, false);
+    this._action.jump = new Action(this._mixer.clipAction(geometry.animations[1]), 0, false);
+    this._action.idle = new Action(this._mixer.clipAction(geometry.animations[2]), 0, false);
+    this._action.walk = new Action(this._mixer.clipAction(geometry.animations[3]), 0, true);
 
     // 境界ヘルパー
     this._boxHelper = new THREE.BoxHelper(this._mesh);
-    this.add(this._boxHelper);
+    //this.add(this._boxHelper);
 
     // 高さ
     this._height = this._mesh.geometry.boundingBox.max.y - this._mesh.geometry.boundingBox.min.y;
@@ -131,98 +136,116 @@ export default class Zensuke extends THREE.Object3D {
   }
 
   /**
+   * アクションを変更します。
+   */
+  _changeAction(actionName) {
+    // 同じアクションなら処理しない
+    if(this._currentAction == actionName) {
+      return;
+    }
+    this._currentAction = actionName;
+    console.info(this._currentAction);
+    this._action[actionName].reset();
+    this._action[actionName].play();
+    this._action[actionName].toWeight(1, 150, (weight) => {
+      _.each(this._action, (value, key) => {
+        if(key == actionName) {
+          value.setAction(weight);
+        } else {
+          value.setAction(1 - weight);
+        }
+      });
+    });
+  }
+
+  /**
    * 更新します。
    */
   update() {
     // モデルのアニメーション更新
     let timeRatio = GameModel.instance.timeRatio;
     let delta = this._clock.getDelta();
+    if(this._currentAction == 'fall' || this._currentAction == 'jump') {
+      delta = 0;
+    }
     this._mixer.update(delta);
 
-    let underFace = Map.instance.getUnderFace(this);
+    // 重力を追加
+    this._addVectorToVelociry(this._gravity);
 
-    if(!underFace) {
-      this._velocity.add(this._gravity);
-    } else if(underFace.distance > this._height) {
-      this._velocity.add(this._gravity);
+    // 着地していて動いていなければ止める
+    if(this._isLanding && !this._isMoving) {
+      this._velocity.x = this._velocity.z = 0;
     }
 
     // 移動
     this.position.add(this._velocity);
 
     // 地上に立たせる処理
-    if(underFace && this.position.y < underFace.point.y) {
+    let underFace = Map.instance.getUnderFace(this);
+    if(underFace && this.position.y < underFace.point.y - this._gravity.y) {
       this.position.y = underFace.point.y;
       this._velocity.y = 0;
+      this._isLanding = true;
+    } else {
+      this._isLanding = false;
+    }
+
+    if(this._isLanding) {
+      if(this._isMoving) {
+        this._changeAction('walk');
+      } else {
+        this._changeAction('idle');
+      }
+    } else {
+      if(this._velocity.y > 0) {
+        this._changeAction('jump');
+      } else {
+        this._changeAction('fall');
+      }
     }
   }
 
   /**
-   * 歩かせます。
+   * 動かします。
    */
-  walk(angle) {
-    if(!this._isWalking) {
-      // 歩きモーション開始
-      this._action.walk.reset();
-      this._action.walk.play();
-      this._action.walk.toWeight(1, 50, (weight) => {
-        this._action.walk.setAction(weight);
-        this._action.idle.setAction(1 - weight);
-      });
-      // 歩いているフラグを立たせる
-      this._isWalking = true;
-    }
-
+  move(angle) {
+    this._isMoving = true;
     let timeRatio = GameModel.instance.timeRatio;
     let axis = new THREE.Vector3(0, 1, 0);
     let rad = angle * Math.PI / 180;
     let walkAcceleration = this._walkAcceleration * timeRatio;
     this._addVectorToVelociry(new THREE.Vector3(-walkAcceleration, 0, 0).applyAxisAngle(axis, rad));
-
     // 向きを変える
     this.rotation.y = angle * Math.PI / 180;
   }
 
-  // #<{(|*
-  //  * 落とします。
-  //  |)}>#
-  // fall(targetY) {
-  //   let timeRatio = GameModel.instance.timeRatio;
-  //   let gravity = this._gravity.clone().multiplyScalar(timeRatio);
-  //   let newPosition = this.position.clone().add(gravity);
-  //   if(newPosition.y < targetY) {
-  //     newPosition.y = targetY;
-  //   }
-  //   this.position.copy(newPosition);
-  // }
+  /**
+   * 落とします。
+   */
+  fall() {
+    // this._action.fall.weight = 0;
+    // this._action.fall.reset();
+    // this._action.fall.play();
+    // this._action.fall.toWeight(1, 100, (weight) => {
+    //   this._action.fall.setAction(weight);
+    //   this._action.jump.setAction(1 - weight);
+    //   this._action.idle.setAction(1 - weight);
+    //   this._action.walk.setAction(1 - weight);
+    // });
+  }
 
   /**
    * ジャンプさせます。
    */
   jump() {
-    // モーション開始
-    this._action.jump.reset();
-    this._action.jump.play();
-    this._action.jump.toWeight(1, 100, (weight) => {
-      this._action.jump.setAction(weight);
-      this._action.idle.setAction(1 - weight);
-    });
-    this._addVectorToVelociry(new THREE.Vector3(0, 1.5, 0));
+    this._addVectorToVelociry(new THREE.Vector3(0, 2, 0));
   }
 
   /**
    * 止めます。
    */
   idle() {
-    this._action.idle.reset();
-    this._action.idle.play();
-    this._action.idle.toWeight(1, 50, (weight) => {
-      this._action.idle.setAction(weight);
-      this._action.walk.setAction(1 - weight);
-    });
-    // 歩いているフラグを折る
-    this._isWalking = false;
-    // xzの速度を0に
-    this._velocity.x = this._velocity.z = 0;
+    this._isMoving = false;
   }
 }
