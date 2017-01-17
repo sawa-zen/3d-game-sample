@@ -199,7 +199,7 @@ export default class Zensuke extends THREE.Object3D {
     } else {
       if(this._velocity.y > 0) {
         this._changeAction('jump');
-      } else {
+      } else if(this._velocity < 0) {
         this._changeAction('fall');
       }
     }
