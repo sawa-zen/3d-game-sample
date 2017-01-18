@@ -127,8 +127,8 @@ export default class Zensuke extends THREE.Object3D {
     let velocity = this._velocity.clone();
     velocity.add(vec);
     let xzVelocity = new THREE.Vector2(velocity.x, velocity.z);
-    if(xzVelocity.length() > 0.35) {
-      xzVelocity.normalize().multiplyScalar(0.35);
+    if(xzVelocity.length() > 0.5) {
+      xzVelocity.normalize().multiplyScalar(0.5);
       velocity.x = xzVelocity.x;
       velocity.z = xzVelocity.y;
     }
