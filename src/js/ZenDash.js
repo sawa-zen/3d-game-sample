@@ -22,13 +22,7 @@ class ZenDash {
       { id: 'tile', url: 'images/texture/tile.png' },
       { id: 'zensuke', url: 'model/zensuke.json' },
       { id: 'zensukeMap', url: 'model/zensuke.png' },
-      { id: 'toon', url: 'images/texture/toon.png' },
-      { id: 'px', url: 'images/texture/s_px.jpg' },
-      { id: 'nx', url: 'images/texture/s_nx.jpg' },
-      { id: 'py', url: 'images/texture/s_py.jpg' },
-      { id: 'ny', url: 'images/texture/s_ny.jpg' },
-      { id: 'pz', url: 'images/texture/s_pz.jpg' },
-      { id: 'nz', url: 'images/texture/s_nz.jpg' }
+      { id: 'toon', url: 'images/texture/toon.png' }
     ]);
     this._loader.addEventListener('complete', this._onCompleteLoad);
   }
