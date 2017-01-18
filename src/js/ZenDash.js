@@ -19,6 +19,7 @@ class ZenDash {
     // アセットのロード
     this._loader = Loader.instance;
     this._loader.load([
+      { id: 'sand', url: 'images/texture/sand.png' },
       { id: 'tile', url: 'images/texture/tile.png' },
       { id: 'zensuke', url: 'model/zensuke.json' },
       { id: 'zensukeMap', url: 'model/zensuke.png' },

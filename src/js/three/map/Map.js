@@ -1,5 +1,7 @@
 import * as THREE from 'three';
-import Loader from '../../loader/Loader';
+import {_} from 'lodash';
+import Plane from './Plane';
+import Plate from './Plate';
 
 /**
  * マップクラスです。
@@ -18,31 +20,22 @@ export default class Map extends THREE.Object3D {
   constructor() {
     super();
 
-    // Geometry
-    let geometry = new THREE.PlaneGeometry(200, 200, 10, 10);
-    for (var i = 0; i < geometry.vertices.length; i++) {
-      var vertex = geometry.vertices[i];
-      vertex.z = Math.random() * 10;
+    // 着地ターゲット
+    this._rayTargetList = [];
+
+    // 地面
+    this._plane = new Plane();
+    this.add(this._plane);
+    this._registTarget(this._plane);
+
+    // プレート
+    for(let i = 1; i < 6; i++) {
+      let plate = new Plate();
+      plate.position.x = -20 * i;
+      plate.position.y = 10 * i;
+      this.add(plate);
+      this._registTarget(plate);
     }
-    geometry.computeVertexNormals();
-    geometry.computeFaceNormals();
-    geometry.normalsNeedUpdate = true;
-    geometry.uvsNeedUpdate = true;
-
-    // Material
-    let texture = Loader.instance.getTexture('tile');
-    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set(24, 24);
-    let material = new THREE.MeshPhongMaterial({
-      map: texture
-    });
-
-    // Mesh
-    let mesh = new THREE.Mesh(geometry, material);
-    mesh.rotation.x = -90 * Math.PI / 180;
-    mesh.rotation.z = 90 * Math.PI / 180;
-    mesh.receiveShadow = true;
-    this.add(mesh);
 
     Map._instance = this;
   }
@@ -51,8 +44,16 @@ export default class Map extends THREE.Object3D {
    * ターゲット真下のfaceを取得します。
    */
   getUnderFace(target) {
-    var rayStartPos = target.position.clone().add(new THREE.Vector3(0, 5, 0));
-    var ray = new THREE.Raycaster(rayStartPos, new THREE.Vector3(0, -1, 0).normalize());
-    return ray.intersectObjects(this.children)[0];
+    let rayStartPos = target.position.clone().add(new THREE.Vector3(0, 5, 0));
+    let ray = new THREE.Raycaster(rayStartPos, new THREE.Vector3(0, -1, 0).normalize());
+    return ray.intersectObjects(this._rayTargetList)[0];
+  }
+
+  /**
+   * レイのターゲットに登録
+   */
+  _registTarget(target) {
+    let rayTargetList = _.union(this._rayTargetList, target.children);
+    this._rayTargetList = rayTargetList;
   }
 }
