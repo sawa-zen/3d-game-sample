@@ -29,7 +29,7 @@ export default class Zensuke extends THREE.Object3D {
     // 速度
     this._velocity = new THREE.Vector3(0, 0, 0);
     // 歩くスピード
-    this._walkAcceleration = 0.18;
+    this._walkAcceleration = 0.02;
     // 向き
     this._agnle = 0;
     // 重力
@@ -139,6 +139,16 @@ export default class Zensuke extends THREE.Object3D {
   }
 
   /**
+   * 向きを変更します。
+   */
+  _setAngle(angle) {
+    let axis = new THREE.Vector3(0, 1, 0);
+    let rad = angle * Math.PI / 180;
+    this._velocity = this._velocity.applyAxisAngle(axis, rad - this.rotation.y);
+    this.rotation.y = rad;
+  }
+
+  /**
    * アクションを変更します。
    */
   _changeAction(actionName) {
@@ -213,14 +223,17 @@ export default class Zensuke extends THREE.Object3D {
    * 動かします。
    */
   move(angle) {
+    // 向きを変える
+    this._setAngle(angle);
+
     this._isMoving = true;
     let timeRatio = GameModel.instance.timeRatio;
-    let axis = new THREE.Vector3(0, 1, 0);
-    let rad = angle * Math.PI / 180;
     let walkAcceleration = this._walkAcceleration * timeRatio;
-    this._addVectorToVelociry(new THREE.Vector3(-walkAcceleration, 0, 0).applyAxisAngle(axis, rad));
-    // 向きを変える
-    this.rotation.y = angle * Math.PI / 180;
+
+    let axis = new THREE.Vector3(0, 1, 0);
+    let normalizeVec = new THREE.Vector3(-1, 0, 0).applyAxisAngle(axis, this.rotation.y).normalize();
+    let addVec = normalizeVec.multiplyScalar(walkAcceleration);
+    this._addVectorToVelociry(addVec);
   }
 
   /**
