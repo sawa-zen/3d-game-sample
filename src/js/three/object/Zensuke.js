@@ -176,7 +176,6 @@ export default class Zensuke extends THREE.Object3D {
    */
   update() {
     // モデルのアニメーション更新
-    let timeRatio = GameModel.instance.timeRatio;
     let delta = this._clock.getDelta();
     if(this._currentAction == 'fall' || this._currentAction == 'jump') {
       delta = 0;
@@ -230,9 +229,11 @@ export default class Zensuke extends THREE.Object3D {
     let timeRatio = GameModel.instance.timeRatio;
     let walkAcceleration = this._walkAcceleration * timeRatio;
 
+    // 現在向いている方向の単位ベクトル x 歩く速さ = 足すベクトル
     let axis = new THREE.Vector3(0, 1, 0);
     let normalizeVec = new THREE.Vector3(-1, 0, 0).applyAxisAngle(axis, this.rotation.y).normalize();
     let addVec = normalizeVec.multiplyScalar(walkAcceleration);
+
     this._addVectorToVelociry(addVec);
   }
 
