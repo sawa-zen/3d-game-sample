@@ -160,7 +160,6 @@ export default class Zensuke extends THREE.Object3D {
     if(this._currentAction == actionName) {
       return;
     }
-    console.info(actionName);
     this._currentAction = actionName;
     this._action[actionName].reset();
     this._action[actionName].play();
@@ -242,7 +241,6 @@ export default class Zensuke extends THREE.Object3D {
     let dot2 = sub.dot(new THREE.Vector2(0, 1));
 
     angle = dot2 >= 0 ? angle : -angle;
-    console.info(dot2, angle);
     this.move(angle);
   }
 
