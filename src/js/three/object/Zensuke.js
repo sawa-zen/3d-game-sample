@@ -14,6 +14,8 @@ export default class Zensuke extends THREE.Object3D {
 
   /** 高さ */
   get height() { return this._height; }
+  /** 歩く最高速度 */
+  set maxSpeed(speed) { this._maxSpeed = speed; };
 
   /**
    * コンストラクター
@@ -30,6 +32,8 @@ export default class Zensuke extends THREE.Object3D {
     this._velocity = new THREE.Vector3(0, 0, 0);
     // 歩くスピード
     this._walkAcceleration = 0.02;
+    // 歩く最高速度
+    this._maxSpeed = 0.5;
     // 向き
     this._agnle = 0;
     // 重力
@@ -127,8 +131,8 @@ export default class Zensuke extends THREE.Object3D {
     let velocity = this._velocity.clone();
     velocity.add(vec);
     let xzVelocity = new THREE.Vector2(velocity.x, velocity.z);
-    if(xzVelocity.length() > 0.5) {
-      xzVelocity.normalize().multiplyScalar(0.5);
+    if(xzVelocity.length() > this._maxSpeed) {
+      xzVelocity.normalize().multiplyScalar(this._maxSpeed);
       velocity.x = xzVelocity.x;
       velocity.z = xzVelocity.y;
     }
@@ -216,6 +220,30 @@ export default class Zensuke extends THREE.Object3D {
         this._changeAction('fall');
       }
     }
+  }
+
+  /**
+   * 追跡します。
+   */
+  seek(target) {
+    let sub = target.position.clone().sub(this.position.clone());
+
+    // 近ければ止まらせる
+    if(sub.length() < 5) {
+      this.idle();
+      return;
+    }
+
+    sub = new THREE.Vector2(sub.x, sub.z).normalize();
+
+    let dot = sub.dot(new THREE.Vector2(-1, 0));
+    let angle = Math.floor(Math.acos(dot) * 180 / Math.PI);
+
+    let dot2 = sub.dot(new THREE.Vector2(0, 1));
+
+    angle = dot2 >= 0 ? angle : -angle;
+    console.info(dot2, angle);
+    this.move(angle);
   }
 
   /**

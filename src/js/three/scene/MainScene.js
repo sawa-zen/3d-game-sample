@@ -52,6 +52,13 @@ export default class MainScene extends THREE.Scene {
     this._zensuke.position.y = 40;
     this.add(this._zensuke);
 
+    // 敵
+    this._enemy = new Zensuke();
+    this._enemy.position.y = 40;
+    this._enemy.maxSpeed = 0.1;
+    this._enemy.scale.multiplyScalar(0.5);
+    this.add(this._enemy);
+
     // フォグ
     this.fog = new THREE.Fog(0xc1edff, 50, 200);
 
@@ -72,6 +79,9 @@ export default class MainScene extends THREE.Scene {
       this._zensuke.move(this._stickAngle);
     }
     this._zensuke.update();
+
+    this._enemy.seek(this._zensuke);
+    this._enemy.update();
 
     this._camera.update(this._zensuke.position);
     this._directionalLight.seek(this._zensuke);
