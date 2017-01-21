@@ -75,8 +75,8 @@ export default class ThreeLayer {
    * リサイズをかけます。
    */
   _resize() {
-    let width = window.innerWidth;
-    let height = window.innerHeight;
+    let width = this._wrapper.clientWidth;
+    let height = this._wrapper.clientHeight;
     this._renderer.domElement.setAttribute('width', String(width));
     this._renderer.domElement.setAttribute('height', String(height));
     this._renderer.setSize(width, height);

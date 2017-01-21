@@ -5,5 +5,14 @@
     left: 0;
     right: 0;
     bottom: 0;
+    margin: auto;
+    max-width: 960px;
+    max-height: 640px;
+
+    @media screen and (max-device-width: 800px) {
+      bottom: 180px;
+      max-width: none;
+      max-height: none;
+    }
   }
 }
