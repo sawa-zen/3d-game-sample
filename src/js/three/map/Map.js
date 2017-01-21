@@ -22,6 +22,10 @@ export default class Map extends THREE.Object3D {
 
     // 着地ターゲット
     this._rayTargetList = [];
+    // レイのスタートに追加するベクトル
+    this._rayStartAddPos = new THREE.Vector3(0, 5, 0);
+    // レイの向きベクトル
+    this._rayFrontVector = new THREE.Vector3(0, -1, 0);
 
     // 地面
     this._plane = new Plane();
@@ -44,8 +48,8 @@ export default class Map extends THREE.Object3D {
    * ターゲット真下のfaceを取得します。
    */
   getUnderFace(target) {
-    let rayStartPos = target.position.clone().add(new THREE.Vector3(0, 5, 0));
-    let ray = new THREE.Raycaster(rayStartPos, new THREE.Vector3(0, -1, 0).normalize());
+    let rayStartPos = target.position.clone().add(this._rayStartAddPos);
+    let ray = new THREE.Raycaster(rayStartPos, this._rayFrontVector, 0, 5);
     return ray.intersectObjects(this._rayTargetList)[0];
   }
 
