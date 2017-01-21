@@ -66,7 +66,7 @@ export default class MainScene extends THREE.Scene {
     this._zenpad = new Zenpad('zenpadLayer');
     this._zenpad.on('moveStick', this._onMoveStick);
     this._zenpad.on('releaseStick', this._onReleaseStick);
-    this._zenpad.on('clickB', this._onClickB);
+    this._zenpad.on('touchstartB', this._onClickB);
     document.addEventListener('keydown', this._onClickB);
   }
 
