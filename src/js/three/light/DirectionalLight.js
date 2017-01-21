@@ -27,6 +27,8 @@ export default class DirectionalLight extends THREE.DirectionalLight {
     this.shadow.camera.left = -this._shadowSize / 3;
     this.shadow.camera.right = this._shadowSize;
     this.shadow.camera.bottom = -this._shadowSize;
+    this.shadow.camera.near = 10;
+    this.shadow.camera.far = 50;
     this.shadow.mapSize.width = this.shadow.mapSize.height = 512;
 
     this._shadowHelper = new THREE.CameraHelper(this.shadow.camera);

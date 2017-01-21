@@ -37,6 +37,7 @@ export default class MainScene extends THREE.Scene {
     // 平行光源
     this._directionalLight = DirectionalLight.instance;
     this.add(this._directionalLight);
+    //this._directionalLight.showHelper();
 
     // スカイボックス
     let skybox = new SkyBox();
