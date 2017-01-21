@@ -34,6 +34,8 @@ export default class Zensuke extends THREE.Object3D {
     this._walkAcceleration = 0.02;
     // 歩く最高速度
     this._maxSpeed = 0.5;
+    // 攻撃モーションカウント
+    this._attackingCount = 0;
     // 向き
     this._agnle = 0;
     // 重力
@@ -66,10 +68,11 @@ export default class Zensuke extends THREE.Object3D {
 
     // ミキサー
     this._mixer = new THREE.AnimationMixer(this._mesh);
-    this._action.fall = new Action(this._mixer.clipAction(geometry.animations[0]), 0, false);
-    this._action.jump = new Action(this._mixer.clipAction(geometry.animations[1]), 0, false);
-    this._action.idle = new Action(this._mixer.clipAction(geometry.animations[2]), 0, false);
-    this._action.walk = new Action(this._mixer.clipAction(geometry.animations[3]), 0, true);
+    this._action.attack = new Action(this._mixer.clipAction(geometry.animations[0]), 0, false);
+    this._action.fall   = new Action(this._mixer.clipAction(geometry.animations[1]), 0, false);
+    this._action.jump   = new Action(this._mixer.clipAction(geometry.animations[2]), 0, false);
+    this._action.idle   = new Action(this._mixer.clipAction(geometry.animations[3]), 0, true);
+    this._action.walk   = new Action(this._mixer.clipAction(geometry.animations[4]), 0, true);
 
     // 境界ヘルパー
     this._boxHelper = new THREE.BoxHelper(this._mesh);
@@ -160,17 +163,14 @@ export default class Zensuke extends THREE.Object3D {
     if(this._currentAction == actionName) {
       return;
     }
+    console.info(actionName);
+    let oldAction = this._action[this._currentAction];
     this._currentAction = actionName;
     this._action[actionName].reset();
     this._action[actionName].play();
-    this._action[actionName].toWeight(1, 200, (weight) => {
-      _.each(this._action, (value, key) => {
-        if(key == actionName) {
-          value.setAction(weight);
-        } else {
-          value.setAction(1 - weight);
-        }
-      });
+    this._action[actionName].toWeight(1, 70, (weight) => {
+      this._action[actionName].setAction(weight);
+      oldAction.setAction(1 - weight);
     });
   }
 
@@ -180,16 +180,13 @@ export default class Zensuke extends THREE.Object3D {
   update() {
     // モデルのアニメーション更新
     let delta = this._clock.getDelta();
-    if(this._currentAction == 'fall' || this._currentAction == 'jump') {
-      delta = 0;
-    }
     this._mixer.update(delta);
 
     // 重力を追加
     this._addVectorToVelociry(this._gravity);
 
     // 着地していて動いていなければ止める
-    if(this._isLanding && !this._isMoving) {
+    if(this._isLanding && !this._isMoving && !this._attackingCount) {
       this._velocity.x = this._velocity.z = 0;
     }
 
@@ -206,7 +203,14 @@ export default class Zensuke extends THREE.Object3D {
       this._isLanding = false;
     }
 
-    if(this._isLanding) {
+    // アタックカウントをデクリメント
+    if(this._attackingCount > 0) {
+      this._attackingCount--;
+    }
+
+    if(this._attackingCount) {
+
+    } else if(this._isLanding) {
       if(this._isMoving) {
         this._changeAction('walk');
       } else {
@@ -271,6 +275,23 @@ export default class Zensuke extends THREE.Object3D {
       return;
     }
     this._addVectorToVelociry(new THREE.Vector3(0, 1.6, 0));
+  }
+
+  /**
+   * 攻撃します。
+   */
+  attack() {
+    if(this._attackingCount > 0) {
+      return;
+    }
+    this._changeAction('attack');
+
+    // 現在向いている方向の単位ベクトル x 歩く速さ = 足すベクトル
+    let axis = new THREE.Vector3(0, 1, 0);
+    let addVec = new THREE.Vector3(-2, 0, 0).applyAxisAngle(axis, this.rotation.y);
+    this._addVectorToVelociry(addVec);
+
+    this._attackingCount = 15;
   }
 
   /**

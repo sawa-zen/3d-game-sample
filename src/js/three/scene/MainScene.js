@@ -18,7 +18,8 @@ export default class MainScene extends THREE.Scene {
   constructor() {
     super();
 
-    this._onClickB = this._onClickB.bind(this);
+    this._onTouchStartB = this._onTouchStartB.bind(this);
+    this._onTouchStartA = this._onTouchStartA.bind(this);
     this._onMoveStick = this._onMoveStick.bind(this);
     this._onReleaseStick = this._onReleaseStick.bind(this);
 
@@ -66,8 +67,9 @@ export default class MainScene extends THREE.Scene {
     this._zenpad = new Zenpad('zenpadLayer');
     this._zenpad.on('moveStick', this._onMoveStick);
     this._zenpad.on('releaseStick', this._onReleaseStick);
-    this._zenpad.on('touchstartB', this._onClickB);
-    document.addEventListener('keydown', this._onClickB);
+    this._zenpad.on('touchstartA', this._onTouchStartA);
+    this._zenpad.on('touchstartB', this._onTouchStartB);
+    document.addEventListener('keydown', this._onTouchStartA);
   }
 
   /**
@@ -104,9 +106,16 @@ export default class MainScene extends THREE.Scene {
   }
 
   /**
-   * Bボタン押下時のハンドラーです。
+   * Aボタンタッチ開始時のハンドラーです。
    */
-  _onClickB() {
+  _onTouchStartA() {
     this._zensuke.jump();
+  }
+
+  /**
+   * Bボタンタッチ開始時のハンドラーです。
+   */
+  _onTouchStartB() {
+    this._zensuke.attack();
   }
 }

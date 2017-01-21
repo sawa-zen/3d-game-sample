@@ -25,7 +25,10 @@ export default class Action {
   constructor(action, weight=0, isRoop=true) {
     this.action_ = action;
     this.weight_ = weight;
-    if (!isRoop) this.action_.setLoop(THREE.LoopOnce, 0);
+    if (!isRoop) {
+      this.action_.setLoop(THREE.LoopOnce, 0);
+      this.action_.clampWhenFinished = true;
+    }
     this.isRunning_ = false;
     this.weight = this.weight_;
   }
