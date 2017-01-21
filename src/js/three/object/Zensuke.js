@@ -272,7 +272,7 @@ export default class Zensuke extends THREE.Object3D {
     if(!this._isLanding) {
       return;
     }
-    this._addVectorToVelociry(new THREE.Vector3(0, 2, 0));
+    this._addVectorToVelociry(new THREE.Vector3(0, 1.6, 0));
   }
 
   /**
