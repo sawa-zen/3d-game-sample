@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import Map from '../map/Map';
 
 /**
  * クリーチャーベースクラス
@@ -16,6 +17,19 @@ export default class Creature extends THREE.Object3D {
    */
   constructor() {
     super();
+
+    // 速度
+    this._velocity = new THREE.Vector3(0, 0, 0);
+    // 向き
+    this._agnle = 0;
+    // 重力
+    this._gravity = new THREE.Vector3(0, -0.08, 0);
+    // 着地しているか否か
+    this._isLanding = false;
+    // 歩くスピード
+    this._walkAcceleration = 0.02;
+    // 歩く最高速度
+    this._maxSpeed = 0.5;
   }
 
   /**
@@ -47,9 +61,87 @@ export default class Creature extends THREE.Object3D {
   }
 
   /**
+   * 更新します。
+   */
+  update() {
+    // 重力を追加
+    this._addVectorToVelociry(this._gravity);
+
+    // 着地していて動いていなければ止める
+    if(this._isLanding && !this._isMoving && !this._attackingCount) {
+      this._velocity.x = this._velocity.z = 0;
+    }
+
+    // 移動
+    this.position.add(this._velocity);
+
+    // 地上に立たせる処理
+    let underFace = Map.instance.getUnderFace(this);
+    if(underFace && this.position.y < underFace.point.y - this._gravity.y) {
+      this.position.y = underFace.point.y;
+      this._velocity.y = 0;
+      this._isLanding = true;
+    } else {
+      this._isLanding = false;
+    }
+  }
+
+  /**
+   * 動かします。
+   */
+  move(angle) {
+    // 向きを変える
+    this._setAngle(angle);
+
+    this._isMoving = true;
+
+    // 現在向いている方向の単位ベクトル x 歩く速さ = 足すベクトル
+    let axis = new THREE.Vector3(0, 1, 0);
+    let addVec = new THREE.Vector3(-this._walkAcceleration, 0, 0)
+      .applyAxisAngle(axis, this.rotation.y);
+    this._addVectorToVelociry(addVec);
+  }
+
+  /**
+   * ジャンプさせます。
+   */
+  jump() {
+    if(!this._isLanding) {
+      return;
+    }
+    // 上向きのベクトルを追加
+    this._addVectorToVelociry(new THREE.Vector3(0, 1.6, 0));
+    // ジャンプイベントを発火
+    this.dispatchEvent({ type: 'jump' });
+  }
+
+  /**
    * 止めます。
    */
   idle() {
     this._isMoving = false;
+  }
+
+  /**
+   * 追跡します。
+   */
+  seek(target) {
+    let sub = target.position.clone().sub(this.position.clone());
+
+    // 近ければ止まらせる
+    if(sub.length() < 5) {
+      this.idle();
+      return;
+    }
+
+    sub = new THREE.Vector2(sub.x, sub.z).normalize();
+
+    let dot = sub.dot(new THREE.Vector2(-1, 0));
+    let angle = Math.floor(Math.acos(dot) * 180 / Math.PI);
+
+    let dot2 = sub.dot(new THREE.Vector2(0, 1));
+
+    angle = dot2 >= 0 ? angle : -angle;
+    this.move(angle);
   }
 }
