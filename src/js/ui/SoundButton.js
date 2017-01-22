@@ -32,6 +32,6 @@ export default class SoundButton extends React.Component {
    */
   _onClick() {
     // BMG再生
-    Sound.instance.playBGM('bgm', 0.1);
+    Sound.instance.playBGM('bgm');
   }
 }

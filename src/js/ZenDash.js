@@ -26,7 +26,7 @@ class ZenDash {
       { id: 'toon', url: 'images/texture/toon.png' },
       { id: 'sword', url: 'sounds/sword1.wav' },
       { id: 'jump', url: 'sounds/jump.wav' },
-      { id: 'bgm', url: 'sounds/tam-g12_loop.wav' }
+      { id: 'bgm', url: 'sounds/bgm.mp3' }
     ]);
     this._loader.addEventListener('complete', this._onCompleteLoad);
   }
