@@ -30,6 +30,8 @@ export default class Creature extends THREE.Object3D {
     this._walkAcceleration = 0.02;
     // 歩く最高速度
     this._maxSpeed = 0.5;
+    // ジャンプ力
+    this._jumpPower = new THREE.Vector3(0, 1.6, 0);
   }
 
   /**
@@ -110,7 +112,7 @@ export default class Creature extends THREE.Object3D {
       return;
     }
     // 上向きのベクトルを追加
-    this._addVectorToVelociry(new THREE.Vector3(0, 1.6, 0));
+    this._addVectorToVelociry(this._jumpPower);
     // ジャンプイベントを発火
     this.dispatchEvent({ type: 'jump' });
   }

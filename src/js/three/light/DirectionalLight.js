@@ -10,6 +10,10 @@ export default class DirectionalLight extends THREE.DirectionalLight {
     return DirectionalLight._instance || new DirectionalLight();
   }
 
+  /** ライト向き */
+  get direction() { return this._direction; }
+  get direction4() { return this._direction4; }
+
   /**
    * コンストラクター
    * @constructor
@@ -17,6 +21,8 @@ export default class DirectionalLight extends THREE.DirectionalLight {
   constructor() {
     super(0xffffff, 0.5);
 
+    this._direction = new THREE.Vector3(3, 3, 4);
+    this._direction4 = new THREE.Vector4(3, 3, 4);
     this._shadowSize = 50;
     this._relativePosition = new THREE.Vector3(10, 10, -10);
 
@@ -47,7 +53,8 @@ export default class DirectionalLight extends THREE.DirectionalLight {
    * 追跡します。
    */
   seek(target) {
-    let newPosition = target.position.clone().add(this._relativePosition);
+    let targetPos = target.position.clone();
+    let newPosition = targetPos.clone().add(this._relativePosition);
     this.position.copy(newPosition);
     this.target = target;
   }

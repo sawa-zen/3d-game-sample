@@ -1,12 +1,11 @@
 import * as THREE from 'three';
-import TWEEN from 'tween.js';
 import glsl from 'glslify';
-import {_} from 'lodash';
 import Loader from '../../loader/Loader';
 import GameModel from '../../model/GameModel';
 import Action from './Action';
 import Sound from '../../sound/Sound';
 import Creature from './Creature';
+import DirectionalLight from '../light/DirectionalLight';
 
 /**
  * Zensukeクラスです。
@@ -94,7 +93,7 @@ export default class Zensuke extends Creature {
       uniforms: {
         lightDirection: {
           type: 'v3',
-          value: new THREE.Vector4(3, 4, 5)
+          value: DirectionalLight.instance.direction4
         },
         toonTexture: {
           type: 't',
