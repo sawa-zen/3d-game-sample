@@ -10,6 +10,11 @@ export default class Sound {
     return Sound._instance || new Sound();
   }
 
+  /** BGMを再生しているかどうか */
+  get isPlayingBGM() {
+    return !!this._currentBGM;
+  }
+
   /**
    * コンストラクター
    * @constructor
@@ -38,6 +43,7 @@ export default class Sound {
     bgm.play();
 
     this._currentBGM = bgm;
+    console.info('play------------------');
   }
 
   /**

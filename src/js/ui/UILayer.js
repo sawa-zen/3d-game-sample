@@ -1,3 +1,7 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import SoundButton from './SoundButton';
+
 /**
  * UIレイヤーのメインクラスです。
  */
@@ -8,6 +12,10 @@ export default class UILayer {
    * @constructor
    */
   constructor() {
-    console.info('UILayer');
+    // メインクラスを描画
+    ReactDOM.render(
+      <SoundButton />,
+      document.getElementById('uiLayer')
+    );
   }
 }

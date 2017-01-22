@@ -71,9 +71,6 @@ export default class MainScene extends THREE.Scene {
     this._zenpad.on('touchstartA', this._onTouchStartA);
     this._zenpad.on('touchstartB', this._onTouchStartB);
     document.addEventListener('keydown', this._onTouchStartA);
-
-    // BMG再生
-    Sound.instance.playBGM('bgm');
   }
 
   /**

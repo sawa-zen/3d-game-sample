@@ -1,5 +1,6 @@
 @import "three/three";
 @import "zenpad/zenpad";
+@import "ui/ui";
 
 html, body {
   width: 100%;
@@ -26,4 +27,5 @@ body {
 
   @include threeLayer;
   @include zenpadLayer;
+  @include uiLayer;
 }
