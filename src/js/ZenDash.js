@@ -23,7 +23,9 @@ class ZenDash {
       { id: 'tile', url: 'images/texture/tile.png' },
       { id: 'zensuke', url: 'model/zensuke.json' },
       { id: 'zensukeMap', url: 'model/zensuke.jpg' },
-      { id: 'toon', url: 'images/texture/toon.png' }
+      { id: 'toon', url: 'images/texture/toon.png' },
+      { id: 'sword', url: 'sounds/sword1.wav' },
+      { id: 'bgm', url: 'sounds/tam-g12_loop.wav' }
     ]);
     this._loader.addEventListener('complete', this._onCompleteLoad);
   }

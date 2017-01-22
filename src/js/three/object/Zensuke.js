@@ -6,6 +6,7 @@ import Loader from '../../loader/Loader';
 import GameModel from '../../model/GameModel';
 import Action from './Action';
 import Map from '../map/Map';
+import Sound from '../../sound/Sound';
 
 /**
  * Zensukeクラスです。
@@ -285,6 +286,7 @@ export default class Zensuke extends THREE.Object3D {
       return;
     }
     this._changeAction('attack');
+    Sound.instance.playSE('sword');
 
     // 現在向いている方向の単位ベクトル x 歩く速さ = 足すベクトル
     let axis = new THREE.Vector3(0, 1, 0);

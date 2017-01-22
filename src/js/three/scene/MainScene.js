@@ -5,6 +5,7 @@ import Map from '../map/Map';
 import Zensuke from '../object/Zensuke';
 import Zenpad from 'zenpad.js';
 import DirectionalLight from '../light/DirectionalLight';
+import Sound from '../../sound/Sound';
 
 /**
  * メインシーンクラスです。
@@ -70,6 +71,9 @@ export default class MainScene extends THREE.Scene {
     this._zenpad.on('touchstartA', this._onTouchStartA);
     this._zenpad.on('touchstartB', this._onTouchStartB);
     document.addEventListener('keydown', this._onTouchStartA);
+
+    // BMG再生
+    Sound.instance.playBGM('bgm');
   }
 
   /**

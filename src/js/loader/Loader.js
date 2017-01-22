@@ -25,7 +25,7 @@ export default class Loader extends THREE.EventDispatcher {
 
     this._preloader = preloader({
       xhrImages: false,
-      loadFullAudio: false,
+      loadFullAudio: true,
       loadFullVideo: false
     });
     this._preloader.on('complete', this._onComplete);
@@ -55,7 +55,6 @@ export default class Loader extends THREE.EventDispatcher {
     let data = _.find(this._assetList, (data) => {
       return data.id == id;
     });
-
     return data.value;
   }
 
@@ -78,7 +77,6 @@ export default class Loader extends THREE.EventDispatcher {
       data.value = this._preloader.get(data.url);
     });
 
-    console.info('comp');
     // 完了イベントを発火
     this.dispatchEvent({ type: 'complete' });
   }
