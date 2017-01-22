@@ -275,6 +275,9 @@ export default class Zensuke extends THREE.Object3D {
     if(!this._isLanding) {
       return;
     }
+    // SEを再生
+    Sound.instance.playSE('jump', 1);
+
     this._addVectorToVelociry(new THREE.Vector3(0, 1.6, 0));
   }
 
@@ -285,8 +288,10 @@ export default class Zensuke extends THREE.Object3D {
     if(this._attackingCount > 0) {
       return;
     }
+    // SEを再生
+    Sound.instance.playSE('sword', 0.2);
+
     this._changeAction('attack');
-    Sound.instance.playSE('sword');
 
     // 現在向いている方向の単位ベクトル x 歩く速さ = 足すベクトル
     let axis = new THREE.Vector3(0, 1, 0);

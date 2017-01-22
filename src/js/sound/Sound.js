@@ -43,7 +43,6 @@ export default class Sound {
     bgm.play();
 
     this._currentBGM = bgm;
-    console.info('play------------------');
   }
 
   /**
@@ -51,6 +50,8 @@ export default class Sound {
    */
   playSE(id, volume = 0.5) {
     let se = this._loader.getResult(id);
+    // はじめに戻しておく
+    se.currentTime = 1;
     // 音量を設定する
     se.volume = volume;
     se.play();
