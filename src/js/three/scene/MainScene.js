@@ -82,14 +82,14 @@ export default class MainScene extends THREE.Scene {
   update() {
     // Zensukeの更新
     if(this._stickIsMoving) {
-      this._zensuke.move(this._stickAngle);
+      this._zensuke.move(this._camera.angle + this._stickAngle);
     }
     this._zensuke.update();
 
     this._enemy.seek(this._zensuke);
     this._enemy.update();
 
-    this._camera.update(this._zensuke.position);
+    this._camera.update(this._zensuke);
     this._directionalLight.seek(this._zensuke);
   }
 

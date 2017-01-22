@@ -9,7 +9,9 @@ export default class Creature extends THREE.Object3D {
   /** 高さ */
   get height() { return this._height; }
   /** 歩く最高速度 */
-  set maxSpeed(speed) { this._maxSpeed = speed; };
+  set maxSpeed(speed) { this._maxSpeed = speed; }
+  /** 正面ベクトル */
+  get frontVec() { return this._frontVec; }
 
   /**
    * コンストラクター

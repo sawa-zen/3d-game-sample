@@ -10,6 +10,9 @@ export default class Camera extends THREE.PerspectiveCamera {
     return Camera._instance || new Camera();
   }
 
+  /** 角度 */
+  get angle() { return this._angle; }
+
   /**
    * コンストラクターです。
    * @constructor
@@ -17,7 +20,8 @@ export default class Camera extends THREE.PerspectiveCamera {
   constructor() {
     super(45, window.innerWidth / window.innerHeight, 1, 500);
 
-    this._xDistance = 30 * 1;
+    this._angle = 0;
+    this._xDistance = 35 * 1;
     this._yDistance = 15 * 1;
     this._lookAtAddVector = new THREE.Vector3(0, 3, 0);
 
@@ -29,17 +33,26 @@ export default class Camera extends THREE.PerspectiveCamera {
   /**
    * 毎フレームの更新をかけます。
    */
-  update(targetPosition) {
-    let lookAtPositon = targetPosition.clone().add(this._lookAtAddVector);
-    this.position.x = targetPosition.x + this._xDistance;
+  update(target) {
+    let lookAtPositon = target.position.clone().add(this._lookAtAddVector);
 
-    let newY = targetPosition.y + this._yDistance;
-    if(newY < this._yDistance) {
-      newY = this._yDistance;
-    }
-    this.position.y = newY;
+    let sub = target.position.clone().sub(this.position.clone());
+    sub = new THREE.Vector2(sub.x, sub.z).normalize();
+    let dot = sub.dot(new THREE.Vector2(-1, 0));
+    let angle = Math.floor(Math.acos(dot) * 180 / Math.PI);
+    let dot2 = sub.dot(new THREE.Vector2(0, 1));
+    angle = dot2 >= 0 ? angle : -angle;
+    this._angle = angle;
 
-    this.position.z = targetPosition.z;
+    // ターゲットとカメラを結ぶベクトル
+    let targetToCamera = this.position.clone().sub(lookAtPositon);
+    // 距離を算出
+    let distance = targetToCamera.length();
+    targetToCamera = targetToCamera.normalize().multiplyScalar(this._xDistance);
+    let newPosition = targetToCamera.add(target.position.clone());
+    newPosition.y = target.position.y + this._yDistance;
+    this.position.copy(newPosition);
+
     this.lookAt(lookAtPositon);
   }
 }
