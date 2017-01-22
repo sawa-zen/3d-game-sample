@@ -172,8 +172,7 @@ export default class Zensuke extends Creature {
     this._changeAction('attack');
 
     // 現在向いている方向の単位ベクトル x 歩く速さ = 足すベクトル
-    let axis = new THREE.Vector3(0, 1, 0);
-    let addVec = new THREE.Vector3(-3, 0, 0).applyAxisAngle(axis, this.rotation.y);
+    let addVec = this._frontVec.clone().multiplyScalar(0.5);
     this._addVectorToVelociry(addVec);
 
     this._attackingCount = 15;

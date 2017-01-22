@@ -32,6 +32,8 @@ export default class Creature extends THREE.Object3D {
     this._maxSpeed = 0.5;
     // ジャンプ力
     this._jumpPower = new THREE.Vector3(0, 1.6, 0);
+    // 正面ベクトル
+    this._frontVec = new THREE.Vector3(-1, 0, 0);
   }
 
   /**
@@ -59,6 +61,7 @@ export default class Creature extends THREE.Object3D {
     let axis = new THREE.Vector3(0, 1, 0);
     let rad = angle * Math.PI / 180;
     this._velocity = this._velocity.applyAxisAngle(axis, rad - this.rotation.y);
+    this._frontVec = this._frontVec.applyAxisAngle(axis, rad - this.rotation.y);
     this.rotation.y = rad;
   }
 
@@ -98,9 +101,7 @@ export default class Creature extends THREE.Object3D {
     this._isMoving = true;
 
     // 現在向いている方向の単位ベクトル x 歩く速さ = 足すベクトル
-    let axis = new THREE.Vector3(0, 1, 0);
-    let addVec = new THREE.Vector3(-this._walkAcceleration, 0, 0)
-      .applyAxisAngle(axis, this.rotation.y);
+    let addVec = this._frontVec.clone().multiplyScalar(this._walkAcceleration);
     this._addVectorToVelociry(addVec);
   }
 
