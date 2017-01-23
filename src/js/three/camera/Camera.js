@@ -51,6 +51,11 @@ export default class Camera extends THREE.PerspectiveCamera {
     targetToCamera = targetToCamera.normalize().multiplyScalar(this._xDistance);
     let newPosition = targetToCamera.add(target.position.clone());
     newPosition.y = target.position.y + this._yDistance;
+
+    if(newPosition.y < this._yDistance) {
+      newPosition.y = this._yDistance;
+    }
+
     this.position.copy(newPosition);
 
     this.lookAt(lookAtPositon);
