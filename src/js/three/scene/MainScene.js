@@ -19,6 +19,8 @@ export default class MainScene extends THREE.Scene {
   constructor() {
     super();
 
+    this._onKeyUp = this._onKeyUp.bind(this);
+    this._onKeyDown = this._onKeyDown.bind(this);
     this._onTouchStartB = this._onTouchStartB.bind(this);
     this._onTouchStartA = this._onTouchStartA.bind(this);
     this._onMoveStick = this._onMoveStick.bind(this);
@@ -70,7 +72,8 @@ export default class MainScene extends THREE.Scene {
     this._zenpad.on('releaseStick', this._onReleaseStick);
     this._zenpad.on('touchstartA', this._onTouchStartA);
     this._zenpad.on('touchstartB', this._onTouchStartB);
-    document.addEventListener('keydown', this._onTouchStartA);
+    document.addEventListener('keydown', this._onKeyDown);
+    document.addEventListener('keyup', this._onKeyUp);
 
     // BGM再生
     Sound.instance.playBGM('bgm');
@@ -91,6 +94,51 @@ export default class MainScene extends THREE.Scene {
 
     this._camera.update(this._zensuke);
     this._directionalLight.seek(this._zensuke);
+  }
+
+  /**
+   * キーダウン時のハンドラーです。
+   */
+  _onKeyDown(event) {
+    switch(event.code) {
+      case "Space":
+        this._zensuke.jump();
+        break;
+      case "KeyL":
+        this._zensuke.attack();
+        break;
+      case "KeyW":
+        this._stickAngle = 0;
+        this._stickIsMoving = true;
+        break;
+      case "KeyA":
+        this._stickAngle = 90;
+        this._stickIsMoving = true;
+        break;
+      case "KeyS":
+        this._stickAngle = 180;
+        this._stickIsMoving = true;
+        break;
+      case "KeyD":
+        this._stickAngle = -90;
+        this._stickIsMoving = true;
+        break;
+    }
+  }
+
+  /**
+   * キーダウン時のハンドラーです。
+   */
+  _onKeyUp(event) {
+    switch(event.code) {
+      case "KeyA":
+      case "KeyW":
+      case "KeyS":
+      case "KeyD":
+        this._stickIsMoving = false;
+        this._zensuke.idle();
+        break;
+    }
   }
 
   /**
