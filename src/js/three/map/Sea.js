@@ -14,7 +14,7 @@ export default class Sea extends THREE.Object3D {
     super();
 
     // Geometry
-    let geometry = new THREE.PlaneGeometry(500, 500, 10, 10);
+    let geometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
 
     var vertexShader = `
 #define SCALE 10.0
@@ -35,7 +35,7 @@ void main() {
     vec3 pos = position;
 
     float strength = 1.0;
-    pos.y += strength * calculateSurface(pos.x, pos.z);
+    pos.z += 1.2 * strength * calculateSurface(pos.x, pos.z);
     pos.y -= strength * calculateSurface(0.0, 0.0);
 
     gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
@@ -61,21 +61,21 @@ void main() {
 
     vec3 blue = uColor;
 
-    gl_FragColor = vec4(blue, 1.0) + tex1;//vec4(blue + vec3(tex1.a * 0.9 - tex2.a * 0.02), 1.0);
+    gl_FragColor = vec4(blue, 1.0) + (tex1 * 0.9) - (tex2 * 0.02);//vec4(blue + vec3(tex1.a * 0.9 - tex2.a * 0.02), 1.0);
 }
     `;
 
     // Material
     let texture = Loader.instance.getTexture('sea');
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set(24, 24);
-    var uniforms = {
+    texture.repeat.set(50, 50);
+    this._uniforms = {
       uMap: {type: 't', value: texture},
-      uTime: {type: 'f', value: 1},
+      uTime: {type: 'f', value: 0},
       uColor: {type: 'f', value: new THREE.Color('#0051da')},
     };
     let material = new THREE.ShaderMaterial({
-      uniforms: uniforms,
+      uniforms: this._uniforms,
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
       side: THREE.DoubleSide
@@ -87,5 +87,12 @@ void main() {
     mesh.rotation.z = 90 * Math.PI / 180;
     mesh.receiveShadow = true;
     this.add(mesh);
+  }
+
+  /**
+   * 更新します。
+   */
+  update() {
+    this._uniforms.uTime.value += 0.005;
   }
 }

@@ -66,4 +66,11 @@ export default class Map extends THREE.Object3D {
     let rayTargetList = _.union(this._rayTargetList, target.children);
     this._rayTargetList = rayTargetList;
   }
+
+  /**
+   * 更新します。
+   */
+  update() {
+    this._sea.update();
+  }
 }

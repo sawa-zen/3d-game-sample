@@ -92,6 +92,8 @@ export default class MainScene extends THREE.Scene {
     this._enemy.seek(this._zensuke);
     this._enemy.update();
 
+    this._map.update();
+
     this._camera.update(this._zensuke);
     this._directionalLight.seek(this._zensuke);
   }
