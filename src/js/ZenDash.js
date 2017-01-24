@@ -24,6 +24,7 @@ class ZenDash {
       { id: 'zensuke', url: 'model/zensuke.json' },
       { id: 'zensukeMap', url: 'model/zensuke.jpg' },
       { id: 'toon', url: 'images/texture/toon.png' },
+      { id: 'sea', url: 'images/texture/sea.jpeg' },
       { id: 'sword', url: 'sounds/sword1.wav' },
       { id: 'jump', url: 'sounds/jump.wav' },
       { id: 'bgm', url: 'sounds/bgm.mp3' }

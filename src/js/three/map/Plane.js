@@ -14,10 +14,11 @@ export default class Plane extends THREE.Object3D {
     super();
 
     // Geometry
-    let geometry = new THREE.PlaneGeometry(200, 200, 10, 10);
-    for (var i = 0; i < geometry.vertices.length; i++) {
-      var vertex = geometry.vertices[i];
-      vertex.z = Math.random() * 10;
+    let geometry = new THREE.PlaneGeometry(300, 300, 30, 30);
+    for (let i = 0; i < geometry.vertices.length; i++) {
+      let vertex = geometry.vertices[i];
+      let length = new THREE.Vector2(vertex.x, vertex.y).length();
+      vertex.z = (20 - (0.1 * length)) + Math.random();
     }
     geometry.computeVertexNormals();
     geometry.computeFaceNormals();

@@ -91,7 +91,6 @@ export default class Creature extends THREE.Object3D {
     if(this._isLanding && !this._isMoving && !this._attackingCount) {
       this._velocity.x = this._velocity.z = 0;
     }
-
   }
 
   /**

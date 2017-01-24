@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import {_} from 'lodash';
 import Plane from './Plane';
 import Plate from './Plate';
+import Sea from './Sea';
 
 /**
  * マップクラスです。
@@ -29,6 +30,7 @@ export default class Map extends THREE.Object3D {
 
     // 地面
     this._plane = new Plane();
+    this._plane.position.y = -10;
     this.add(this._plane);
     this._registTarget(this._plane);
 
@@ -40,6 +42,10 @@ export default class Map extends THREE.Object3D {
       this.add(plate);
       this._registTarget(plate);
     }
+
+    // 海
+    this._sea = new Sea();
+    this.add(this._sea);
 
     Map._instance = this;
   }
