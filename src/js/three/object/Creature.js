@@ -74,23 +74,24 @@ export default class Creature extends THREE.Object3D {
     // 重力を追加
     this._addVectorToVelociry(this._gravity);
 
-    // 着地していて動いていなければ止める
-    if(this._isLanding && !this._isMoving && !this._attackingCount) {
-      this._velocity.x = this._velocity.z = 0;
-    }
-
     // 移動
     this.position.add(this._velocity);
 
     // 地上に立たせる処理
     let underFace = Map.instance.getUnderFace(this);
-    if(underFace && this.position.y < underFace.point.y - this._gravity.y) {
+    if(underFace && this.position.y - 0.5 < underFace.point.y) {
       this.position.y = underFace.point.y;
       this._velocity.y = 0;
       this._isLanding = true;
     } else {
       this._isLanding = false;
     }
+
+    // 着地していて動いていなければ止める
+    if(this._isLanding && !this._isMoving && !this._attackingCount) {
+      this._velocity.x = this._velocity.z = 0;
+    }
+
   }
 
   /**
@@ -111,6 +112,7 @@ export default class Creature extends THREE.Object3D {
    * ジャンプさせます。
    */
   jump() {
+    console.info(this._isLanding);
     if(!this._isLanding) {
       return;
     }
