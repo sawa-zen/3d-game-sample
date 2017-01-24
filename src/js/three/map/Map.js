@@ -49,7 +49,7 @@ export default class Map extends THREE.Object3D {
    */
   getUnderFace(target) {
     let rayStartPos = target.position.clone().add(this._rayStartAddPos);
-    let ray = new THREE.Raycaster(rayStartPos, this._rayFrontVector, 0, 5);
+    let ray = new THREE.Raycaster(rayStartPos, this._rayFrontVector, 0, 20);
     return ray.intersectObjects(this._rayTargetList)[0];
   }
 

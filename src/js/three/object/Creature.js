@@ -112,7 +112,6 @@ export default class Creature extends THREE.Object3D {
    * ジャンプさせます。
    */
   jump() {
-    console.info(this._isLanding);
     if(!this._isLanding) {
       return;
     }
