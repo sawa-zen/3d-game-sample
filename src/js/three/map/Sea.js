@@ -14,10 +14,10 @@ export default class Sea extends THREE.Object3D {
     super();
 
     // Geometry
-    let geometry = new THREE.PlaneGeometry(700, 700, 10, 10);
+    let geometry = new THREE.PlaneGeometry(500, 500, 10, 10);
 
     var vertexShader = `
-#define SCALE 10.0
+#define SCALE 20.0
 
 varying vec2 vUv;
 
@@ -34,7 +34,7 @@ void main() {
     vUv = uv;
     vec3 pos = position;
 
-    float strength = 1.0;
+    float strength = 2.0;
     pos.z += 1.2 * strength * calculateSurface(pos.x, pos.z);
     pos.y -= strength * calculateSurface(0.0, 0.0);
 
@@ -57,11 +57,9 @@ void main() {
     uv.y += 0.12 * (sin(uv.x * 4.2 + uTime * 0.64) + sin(uv.x * 6.3 + uTime * 1.65) + sin(uv.x * 8.2 + uTime * 0.45)) / 3.0;
 
     vec4 tex1 = texture2D(uMap, uv * 1.0);
-    vec4 tex2 = texture2D(uMap, uv * 1.0 + vec2(0.2));
-
     vec3 blue = uColor;
 
-    gl_FragColor = vec4(blue, 1.0) + (tex1 * 0.9) - (tex2 * 0.02);//vec4(blue + vec3(tex1.a * 0.9 - tex2.a * 0.02), 1.0);
+    gl_FragColor = vec4(blue, 1.0) + (tex1 * 0.9);
 }
     `;
 
@@ -93,6 +91,6 @@ void main() {
    * 更新します。
    */
   update() {
-    this._uniforms.uTime.value += 0.005;
+    this._uniforms.uTime.value += 0.007;
   }
 }
