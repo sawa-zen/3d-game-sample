@@ -21,7 +21,7 @@ export default class Camera extends THREE.PerspectiveCamera {
     super(45, window.innerWidth / window.innerHeight, 1, 10000);
 
     this._angle = 0;
-    this._xDistance = 35 * 1.1;
+    this._xDistance = 40 * 1.1;
     this._yDistance = 10 * 1.1;
     this._lookAtAddVector = new THREE.Vector3(0, 3, 0);
 
