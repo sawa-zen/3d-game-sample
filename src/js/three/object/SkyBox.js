@@ -42,7 +42,6 @@ export default class SkyBox extends THREE.Object3D {
         side: THREE.BackSide
       })
     );
-    mesh.position.y = -15;
 
     this.add(mesh);
   }

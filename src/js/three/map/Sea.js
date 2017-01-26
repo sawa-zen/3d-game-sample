@@ -76,7 +76,7 @@ void main() {
     // Material
     let texture = Loader.instance.getTexture('sea');
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set(50, 50);
+    texture.repeat.set(1000, 1000);
     this._uniforms = {
       uMap: {type: 't', value: texture},
       uTime: {type: 'f', value: 0},
