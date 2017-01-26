@@ -14,7 +14,7 @@ export default class Sea extends THREE.Object3D {
     super();
 
     // Geometry
-    let geometry = new THREE.PlaneGeometry(500, 500, 10, 10);
+    let geometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
 
     var vertexShader = `
 #define SCALE 20.0

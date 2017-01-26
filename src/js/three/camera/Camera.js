@@ -18,7 +18,7 @@ export default class Camera extends THREE.PerspectiveCamera {
    * @constructor
    */
   constructor() {
-    super(45, window.innerWidth / window.innerHeight, 1, 500);
+    super(45, window.innerWidth / window.innerHeight, 1, 1500);
 
     this._angle = 0;
     this._xDistance = 35 * 1.1;

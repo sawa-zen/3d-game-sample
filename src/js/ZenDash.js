@@ -25,6 +25,12 @@ class ZenDash {
       { id: 'zensukeMap', url: 'model/zensuke.jpg' },
       { id: 'toon', url: 'images/texture/toon.png' },
       { id: 'sea', url: 'images/texture/sea.jpeg' },
+      { id: 'px', url: 'images/texture/s_px.jpg' },
+      { id: 'nx', url: 'images/texture/s_nx.jpg' },
+      { id: 'py', url: 'images/texture/s_py.jpg' },
+      { id: 'ny', url: 'images/texture/s_ny.jpg' },
+      { id: 'pz', url: 'images/texture/s_pz.jpg' },
+      { id: 'nz', url: 'images/texture/s_nz.jpg' },
       { id: 'sword', url: 'sounds/sword1.wav' },
       { id: 'jump', url: 'sounds/jump.wav' },
       { id: 'bgm', url: 'sounds/bgm.mp3' }
