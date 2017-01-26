@@ -31,6 +31,7 @@ export default class Plane extends THREE.Object3D {
     texture.repeat.set(24, 24);
     let material = new THREE.MeshPhongMaterial({
       map: texture,
+      fog: false,
       shininess: 0
     });
 

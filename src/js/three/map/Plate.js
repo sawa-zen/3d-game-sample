@@ -18,7 +18,11 @@ export default class Plate extends THREE.Object3D {
     // Material
     let texture = Loader.instance.getTexture('tile');
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-    let material = new THREE.MeshPhongMaterial({ map: texture });
+    let material = new THREE.MeshPhongMaterial({
+      map: texture,
+      fog: false,
+      shininess: 0
+    });
 
     let mesh = new THREE.Mesh(geometry, material);
     mesh.castShadow = true;

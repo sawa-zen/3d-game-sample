@@ -17,7 +17,7 @@ export default class Sea extends THREE.Object3D {
     let geometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
 
     var vertexShader = `
-#define SCALE 20.0
+#define SCALE 50.0
 
 varying vec2 vUv;
 varying float fogDepth;
@@ -58,7 +58,7 @@ uniform float fogNear;
 uniform float fogFar;
 
 void main() {
-    vec2 uv = vUv * 10.0 + vec2(uTime * -0.05);
+    vec2 uv = vUv * 18.0 + vec2(uTime * -0.05);
 
     uv.y += 0.01 * (sin(uv.x * 3.5 + uTime * 0.35) + sin(uv.x * 4.8 + uTime * 1.05) + sin(uv.x * 7.3 + uTime * 0.45)) / 3.0;
     uv.x += 0.12 * (sin(uv.y * 4.0 + uTime * 0.5) + sin(uv.y * 6.8 + uTime * 0.75) + sin(uv.y * 11.3 + uTime * 0.2)) / 3.0;
@@ -67,7 +67,7 @@ void main() {
     vec4 tex1 = texture2D(uMap, uv * 1.0);
     vec3 blue = uColor;
 
-    gl_FragColor = vec4(blue, 1.0) + (tex1 * 0.9);
+    gl_FragColor = vec4(blue, 1.0) + (tex1 * 0.7);
     float fogFactor = smoothstep( fogNear, fogFar, fogDepth );
     gl_FragColor = vec4(mix(gl_FragColor.rgb, fogColor, fogFactor), 0.5);
 }
@@ -76,7 +76,6 @@ void main() {
     // Material
     let texture = Loader.instance.getTexture('sea');
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set(1000, 1000);
     this._uniforms = {
       uMap: {type: 't', value: texture},
       uTime: {type: 'f', value: 0},
