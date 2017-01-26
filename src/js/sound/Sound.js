@@ -19,7 +19,7 @@ export default class Sound {
       if(bool) {
         this._currentBGM.pause();
       } else {
-        this._currentBGM.play();
+        // this._currentBGM.play();
       }
     }
     _.map(this._SEList, (se) => {
@@ -61,7 +61,7 @@ export default class Sound {
     // ループ再生を設定
     bgm.loop = loop;
     bgm.muted = this._isMuted;
-    bgm.play();
+    // bgm.play();
 
     this._currentBGM = bgm;
   }
@@ -79,6 +79,6 @@ export default class Sound {
     // 音量を設定する
     se.volume = volume;
     se.muted = this._isMuted;
-    se.play();
+    // se.play();
   }
 }

@@ -14,7 +14,7 @@ export default class UILayer {
   constructor() {
     // メインクラスを描画
     ReactDOM.render(
-      <SoundButton />,
+      <div />,
       document.getElementById('uiLayer')
     );
   }
