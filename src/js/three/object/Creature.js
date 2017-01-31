@@ -29,9 +29,9 @@ export default class Creature extends THREE.Object3D {
     // 着地しているか否か
     this._isLanding = false;
     // 歩くスピード
-    this._walkAcceleration = 0.02;
+    this._walkAcceleration = 0.03;
     // 歩く最高速度
-    this._maxSpeed = 0.5;
+    this._maxSpeed = 0.6;
     // ジャンプ力
     this._jumpPower = new THREE.Vector3(0, 1.6, 0);
     // 正面ベクトル
