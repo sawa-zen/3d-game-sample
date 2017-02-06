@@ -76,7 +76,7 @@ export default class MainScene extends THREE.Scene {
     document.addEventListener('keyup', this._onKeyUp);
 
     // BGM再生
-    Sound.instance.playBGM('bgm');
+    // Sound.instance.playBGM('bgm');
   }
 
   /**

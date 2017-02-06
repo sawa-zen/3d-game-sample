@@ -30,10 +30,10 @@ class ZenDash {
       { id: 'py', url: 'images/texture/s_py.jpg' },
       { id: 'ny', url: 'images/texture/s_ny.jpg' },
       { id: 'pz', url: 'images/texture/s_pz.jpg' },
-      { id: 'nz', url: 'images/texture/s_nz.jpg' },
-      { id: 'sword', url: 'sounds/sword1.wav' },
-      { id: 'jump', url: 'sounds/jump.wav' },
-      { id: 'bgm', url: 'sounds/bgm.mp3' }
+      { id: 'nz', url: 'images/texture/s_nz.jpg' }
+      // { id: 'sword', url: 'sounds/sword1.wav' },
+      // { id: 'jump', url: 'sounds/jump.wav' },
+      // { id: 'bgm', url: 'sounds/bgm.mp3' }
     ]);
     this._loader.addEventListener('complete', this._onCompleteLoad);
   }
