@@ -3,7 +3,6 @@ import glsl from 'glslify';
 import Loader from '../../loader/Loader';
 import GameModel from '../../model/GameModel';
 import Action from './Action';
-import Sound from '../../sound/Sound';
 import Creature from './Creature';
 import DirectionalLight from '../light/DirectionalLight';
 
@@ -166,8 +165,6 @@ export default class Zensuke extends Creature {
     if(this._attackingCount > 0) {
       return;
     }
-    // SEを再生
-    Sound.instance.playSE('sword', 0.2);
     // アタックモーションを再生
     this._changeAction('attack');
 
@@ -182,7 +179,5 @@ export default class Zensuke extends Creature {
    * ジャンプした際のハンドラーです。
    */
   _onJump() {
-    // SEを再生
-    Sound.instance.playSE('jump');
   }
 }
