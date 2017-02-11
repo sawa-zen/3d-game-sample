@@ -6,5 +6,6 @@
   },
   "files": [
     "./public/**/*.{html,htm,css,js}"
-  ]
+  ],
+  "reloadDelay": 1000
 }

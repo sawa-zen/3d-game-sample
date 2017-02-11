@@ -74,8 +74,17 @@ export default class Creature extends THREE.Object3D {
     // 重力を追加
     this._addVectorToVelociry(this._gravity);
 
+    // 壁判定処理
+    let frontFace = Map.instance.getFrontFace(this);
+
     // 移動
     this.position.add(this._velocity);
+
+    console.info(frontFace && frontFace.distance, ':', 2 + this._velocity.length() );
+    if(frontFace && frontFace.distance < 2 + this._velocity.length()) {
+      this.position.x = frontFace.point.x;
+      this.position.z = frontFace.point.z;
+    }
 
     // 地上に立たせる処理
     let underFace = Map.instance.getUnderFace(this);
