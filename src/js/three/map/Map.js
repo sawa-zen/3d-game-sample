@@ -60,6 +60,16 @@ export default class Map extends THREE.Object3D {
   }
 
   /**
+   * ターゲット正面のfaceを取得します。
+   */
+  getFrontFace(target) {
+    let frontVec = target.frontVec.clone().normalize();
+    let rayStartPos = target.position.clone().add(new THREE.Vector3(0, 2, 0));
+    let ray = new THREE.Raycaster(rayStartPos, frontVec, 0, 20);
+    return ray.intersectObjects(this._rayTargetList)[0];
+  }
+
+  /**
    * レイのターゲットに登録
    */
   _registTarget(target) {

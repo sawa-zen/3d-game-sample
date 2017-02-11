@@ -13,7 +13,7 @@ export default class Plate extends THREE.Object3D {
   constructor() {
     super();
 
-    let geometry = new THREE.BoxGeometry(20, 3, 10);
+    let geometry = new THREE.BoxGeometry(20, 20, 10);
 
     // Material
     let texture = Loader.instance.getTexture('tile');
