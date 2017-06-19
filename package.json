@@ -31,5 +31,8 @@
     "tween.js": "^16.6.0",
     "watchify": "^3.9.0",
     "zenpad.js": "^0.1.11"
+  },
+  "dependencies": {
+    "utsuroi": "^0.1.4"
   }
 }
