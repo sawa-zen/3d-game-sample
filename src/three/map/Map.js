@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import {_} from 'lodash';
+import _ from 'lodash';
 import Plane from './Plane';
 import Plate from './Plate';
 import Sea from './Sea';

@@ -1,5 +1,5 @@
 import preloader from 'preloader';
-import {_} from 'lodash';
+import _ from 'lodash';
 import * as THREE from 'three';
 
 /**

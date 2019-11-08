@@ -1,10 +1,16 @@
 import * as THREE from 'three';
-import glsl from 'glslify';
 import Loader from '../../loader/Loader';
 import GameModel from '../../model/GameModel';
 import Action from './Action';
 import Creature from './Creature';
 import DirectionalLight from '../light/DirectionalLight';
+// const vertexShader = require('raw-loader!glslify-loader!../../glsl/zensukeVertex.glsl')
+// const fragmentShader = require('raw-loader!glslify-loader!../../glsl/zensukeFragment.glsl')
+import vertexShader from '../../glsl/zensukeVertex.glsl'
+import fragmentShader from '../../glsl/zensukeFragment.glsl'
+
+console.info(vertexShader);
+console.info(fragmentShader);
 
 /**
  * Zensukeクラスです。
@@ -87,8 +93,8 @@ export default class Zensuke extends Creature {
     let map = this._loader.getTexture('zensukeMap');
 
     return new THREE.ShaderMaterial({
-      vertexShader: glsl('../../glsl/zensukeVertex.glsl'),
-      fragmentShader: glsl('../../glsl/zensukeFragment.glsl'),
+      vertexShader,
+      fragmentShader,
       uniforms: {
         lightDirection: {
           type: 'v3',

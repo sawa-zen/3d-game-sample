@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#threeLayer,
+#uiLayer,
+#zenpadLayer
+{
+  position: fixed;
+}
+
+#threeLayer {
+  width: 100%;
+  height: 100%;
+}
+
+#zenpadLayer {
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  height: 170px;
+  opacity: 0.8;
+}
+  </style>
+</head>
+<body>
+  <div id="threeLayer">
+    <div id="uiLayer"></div>
+    <div id="zenpadLayer"></div>
+  </div>
+</body>
+</html>

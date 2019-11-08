@@ -7,9 +7,9 @@ void main() {
   vUv = uv;
   vec3 pos = position;
 
-	#include <skinbase_vertex>
+  #include <skinbase_vertex>
   #include <begin_vertex>
-	#include <skinning_vertex>
+  #include <skinning_vertex>
 
   vec3 transformedNormal = normalMatrix * normal;
   vNormal = normalize(transformedNormal);
