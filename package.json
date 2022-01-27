@@ -24,7 +24,7 @@
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "stats.js": "^0.17.0",
-    "three": "0.92",
+    "three": "0.137",
     "tween.js": "^16.6.0",
     "utsuroi": "^0.2.4",
     "zenpad.js": "^0.1.20"
